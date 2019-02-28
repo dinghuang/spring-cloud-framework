@@ -1,0 +1,73 @@
+server:
+  port: ${PORT:8080}
+spring:
+  application:
+    name: sale-server
+  #h2数据库
+#  datasource:
+#    driver-class-name: org.h2.Driver
+#    schema: classpath:db/schema-h2.sql
+#    data: classpath:db/data-h2.sql
+#    url: jdbc:h2:mem:test
+#    username: root
+#    password: test
+  datasource:
+    druid:
+      url: jdbc:mysql://localhost/test?useUnicode=true&characterEncoding=utf-8&useSSL=false
+      username: root
+      password: root
+      stat-view-servlet:
+       enabled: true
+       #内置监控页面的首页是/druid/index.html
+       url-pattern: /druid/index.html
+       login-username: admin
+       login-password: admin
+    filter:
+      stat:
+        enabled: true
+        db-type: h2
+        log-slow-sql: true
+        slow-sql-millis: 2000
+eureka:
+  instance:
+    preferIpAddress: true
+    leaseRenewalIntervalInSeconds: 10
+    leaseExpirationDurationInSeconds: 30
+  client:
+    serviceUrl:
+      defaultZone: http://localhost:8000/eureka/
+    registryFetchIntervalSeconds: 10
+dinghuang:
+  swagger: enabled
+#认证相关
+jwt:
+  #令牌头
+  header: aaa
+  route:
+    authentication:
+      #身份验证路径
+      path: /authentication
+      refreshPath: /authentication/refresh
+  public:
+    #公共接口
+    uris: /swagger-ui.html
+security:
+  #是否开启
+  enabled: true
+  #不验证页面权限的直接跳过
+  action:
+    enabled: false
+  permission:
+    #顶级管理员
+    superadmin: admin
+
+
+
+
+
+
+
+
+
+
+
