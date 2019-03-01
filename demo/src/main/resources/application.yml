@@ -1,5 +1,5 @@
 server:
-  port: ${PORT:8080}
+  port: 8080
 spring:
   application:
     name: sale-server
@@ -38,19 +38,33 @@ eureka:
       defaultZone: http://localhost:8000/eureka/
     registryFetchIntervalSeconds: 10
 dinghuang:
-  swagger: enabled
+  swagger:
+    enabled: true
+  oauth:
+    clearToken: false
+    enabledSingleLogin: false
+    accessTokenValiditySeconds: 243600
 #认证相关
 jwt:
+  #秘钥
+  secret: WX:742041978
   #令牌头
-  header: aaa
+  header: aaaz
   route:
     authentication:
+      #登录页面
+      loginPath: /login
       #身份验证路径
       path: /authentication
-      refreshPath: /authentication/refresh
+      refresh: /authentication/refresh
+      redirect:
+        url: http://localhost:8080/manager/swagger-ui.html
+      ssl: false
+  #到期时间，单位是秒
+  expiration: 3600
   public:
     #公共接口
-    uris: /swagger-ui.html
+    uris: /swagger-ui.html,/webjars/*
 security:
   #是否开启
   enabled: true

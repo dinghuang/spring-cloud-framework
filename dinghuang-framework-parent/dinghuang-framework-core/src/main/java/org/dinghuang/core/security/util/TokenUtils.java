@@ -7,6 +7,8 @@ import org.apache.commons.lang.time.DateFormatUtils;
 import org.dinghuang.core.security.exception.AuthenticationException;
 import org.dinghuang.core.security.model.SecurityUser;
 import org.dinghuang.core.utils.Base64Utils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mobile.device.Device;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -35,6 +37,8 @@ public class TokenUtils {
      */
     private static final String AUDIENCE = "audience";
     private static final String USERNAME = "username";
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(TokenUtils.class);
 
     @Value("${jwt.secret}")
     private String secret;
@@ -108,7 +112,8 @@ public class TokenUtils {
             final Claims claims = getClaimsFromToken(token);
             username = claims.getSubject();
         } catch (Exception e) {
-            throw new AuthenticationException(" Failed to from token get username");
+            LOGGER.debug("Failed to from token get username");
+            return null;
         }
         return username;
     }

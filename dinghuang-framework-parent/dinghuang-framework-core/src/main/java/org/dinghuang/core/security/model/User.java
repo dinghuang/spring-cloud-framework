@@ -19,12 +19,13 @@ public class User extends BaseModel {
 
     protected String username;
     protected String realName;
-
+    protected Long userId;
     protected String password;
-
+    protected Integer passwordAttempt;
     protected String description;
     protected String email;
     protected Date lastPasswordReset;
+    protected Date lastLoginAt;
     protected String authorities;
 
     public void setPassword(String password) {

@@ -217,7 +217,6 @@ public class AuthenticationTokenFilter extends UsernamePasswordAuthenticationFil
                 MDC.put(tokenHeader, authToken);
             }
             String username = tokenUtils.getUsernameFromToken(authToken);
-
             LOGGER.debug("Request path: {}, token={}", httpRequest.getMethod() + SIGN + httpRequest.getRequestURI(), authToken);
             //验证权限
             if (securityEnabled) {
