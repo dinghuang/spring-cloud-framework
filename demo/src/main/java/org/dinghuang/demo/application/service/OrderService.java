@@ -3,6 +3,7 @@ package org.dinghuang.demo.application.service;
 import org.dinghuang.demo.application.dto.OrderCreateDTO;
 import org.dinghuang.demo.application.dto.OrderDTO;
 import org.dinghuang.demo.application.dto.OrderUpdateDTO;
+import org.dinghuang.demo.application.mapper.OrderMapper;
 import org.dinghuang.demo.infra.dataobject.OrderDO;
 import org.dinghuang.demo.infra.repository.OrderRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,7 +12,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
-import static org.dinghuang.core.utils.ConvertorUtils.toTarget;
 import static org.dinghuang.core.utils.ConvertorUtils.toTargetList;
 
 /**
@@ -24,6 +24,9 @@ public class OrderService {
     @Autowired
     private OrderRepository orderRepository;
 
+    @Autowired
+    private OrderMapper orderMapper;
+
     /**
      * 根据订单id查询订单
      *
@@ -32,7 +35,7 @@ public class OrderService {
      */
     public OrderDTO queryById(Long id) {
         OrderDO orderDO = orderRepository.selectById(id);
-        return toTarget(orderDO, OrderDTO.class);
+        return orderMapper.toDTO(orderDO);
     }
 
     /**
@@ -43,7 +46,7 @@ public class OrderService {
      */
     @Transactional(rollbackFor = Exception.class)
     public OrderDTO create(OrderCreateDTO orderCreateDTO) {
-        OrderDO orderDO = toTarget(orderCreateDTO, OrderDO.class);
+        OrderDO orderDO = orderMapper.toDO(orderCreateDTO);
         orderRepository.insert(orderDO);
         return queryById(orderDO.getUuid());
     }
@@ -56,7 +59,7 @@ public class OrderService {
      */
     @Transactional(rollbackFor = Exception.class)
     public OrderDTO update(OrderUpdateDTO orderUpdateDTO) {
-        OrderDO orderDO = toTarget(orderUpdateDTO, OrderDO.class);
+        OrderDO orderDO = orderMapper.toDO(orderUpdateDTO);
         orderRepository.updateById(orderDO);
         return queryById(orderDO.getUuid());
     }
@@ -68,7 +71,6 @@ public class OrderService {
      * @return List
      */
     public List<OrderDTO> queryByUserId(Long userId) {
-        orderRepository.queryAll();
         return toTargetList(orderRepository.queryAllByUserId(userId), OrderDTO.class);
     }
 }
