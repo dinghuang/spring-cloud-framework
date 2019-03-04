@@ -47,6 +47,19 @@ spring:
         url-pattern: /*
         # 忽略过滤格式
         exclusions: "*.js,*.gif,*.jpg,*.png,*.css,*.ico,/druid/*"
+  #liqubase是否开启
+  liquibase:
+    enabled: true
+    changeLog: "classpath:/db/changelog/db.changelog-master.xml"
+    checkChangeLogLocation: true
+    #用于跟踪更改历史记录的表的名称。
+    databaseChangeLogTable: DATABASECHANGELOG
+    #用于跟踪Liquibase并发使用情况的表的名称。
+    databaseChangeLogLockTable: DATABASECHANGELOGLOCK
+    #是否先清空数据库
+    dropFirst: false
+    #是否应该在执行更新之前测试回滚。
+    testRollbackOnUpdate: true
 mybatis-plus:
   mapper-locations: classpath*:/mapper/**Mapper.xml
   #实体扫描，多个package用逗号或者分号分隔
