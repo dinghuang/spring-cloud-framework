@@ -9,27 +9,29 @@ import org.mapstruct.Mapping;
 import org.mapstruct.factory.Mappers;
 
 /**
+ * 这个跟lombok的结合还是有点问题
+ *
  * @author dinghuang123@gmail.com
  * @since 2019/3/4
  */
-@Mapper(componentModel = "spring")
+//@Mapper(componentModel = "spring")
 public interface OrderMapper {
 
-    OrderMapper INSTANCE = Mappers.getMapper(OrderMapper.class);
-
-    @Mapping(source = "uuid", target = "uuid")
-    @Mapping(source = "customerName", target = "customerName")
-    @Mapping(source = "description", target = "description")
-    @Mapping(source = "version", target = "version")
-    OrderDTO toDTO(OrderDO orderDO);
-
-    @Mapping(source = "customerName", target = "customerName")
-    @Mapping(source = "description", target = "description")
-    OrderDO toDO(OrderCreateDTO orderDO);
-
-    @Mapping(source = "customerName", target = "customerName")
-    @Mapping(source = "description", target = "description")
-    @Mapping(source = "version", target = "version")
-    OrderDO toDO(OrderUpdateDTO orderUpdateDTO);
+//    OrderMapper INSTANCE = Mappers.getMapper(OrderMapper.class);
+//
+//    @Mapping(source = "uuid", target = "uuid")
+//    @Mapping(source = "customerName", target = "customerName")
+//    @Mapping(source = "description", target = "description")
+//    @Mapping(source = "version", target = "version")
+//    OrderDTO toDTO(OrderDO orderDO);
+//
+//    @Mapping(source = "customerName", target = "customerName")
+//    @Mapping(source = "description", target = "description")
+//    OrderDO toDO(OrderCreateDTO orderDO);
+//
+//    @Mapping(source = "customerName", target = "customerName")
+//    @Mapping(source = "description", target = "description")
+//    @Mapping(source = "version", target = "version")
+//    OrderDO toDO(OrderUpdateDTO orderUpdateDTO);
 
 }
