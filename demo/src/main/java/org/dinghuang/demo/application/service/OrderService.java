@@ -57,7 +57,7 @@ public class OrderService {
     @Transactional(rollbackFor = Exception.class)
     public OrderDTO update(OrderUpdateDTO orderUpdateDTO) {
         OrderDO orderDO = toTarget(orderUpdateDTO, OrderDO.class);
-        orderRepository.updateBySelect(orderDO);
+        orderRepository.updateById(orderDO);
         return queryById(orderDO.getUuid());
     }
 
@@ -68,6 +68,7 @@ public class OrderService {
      * @return List
      */
     public List<OrderDTO> queryByUserId(Long userId) {
+        orderRepository.queryAll();
         return toTargetList(orderRepository.queryAllByUserId(userId), OrderDTO.class);
     }
 }

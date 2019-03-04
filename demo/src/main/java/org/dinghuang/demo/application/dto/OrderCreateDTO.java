@@ -8,8 +8,8 @@ import lombok.Data;
  * @author dinghuang123@gmail.com
  * @since 2019/3/4
  */
-@ApiModel(description = "创建订单详情")
 @Data
+@ApiModel(description = "创建订单详情")
 public class OrderCreateDTO {
     @ApiModelProperty(notes = "客户名称")
     private String customerName;

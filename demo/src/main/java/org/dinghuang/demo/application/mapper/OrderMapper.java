@@ -12,6 +12,7 @@ import org.mapstruct.factory.Mappers;
  * @since 2019/3/4
  */
 @Mapper(componentModel = "spring")
+//todo 这个跟lombok一起用有点问题，还在解决
 public interface OrderMapper {
 
     OrderMapper INSTANCE = Mappers.getMapper(OrderMapper.class);

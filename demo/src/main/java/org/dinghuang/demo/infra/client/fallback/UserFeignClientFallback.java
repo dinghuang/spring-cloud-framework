@@ -3,8 +3,6 @@ package org.dinghuang.demo.infra.client.fallback;
 import feign.hystrix.FallbackFactory;
 import org.dinghuang.core.exception.FeignException;
 import org.dinghuang.demo.infra.client.UserFeignClient;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestHeader;
@@ -15,8 +13,6 @@ import org.springframework.web.bind.annotation.RequestHeader;
  */
 @Component
 public class UserFeignClientFallback implements FallbackFactory<UserFeignClient> {
-
-    private static final Logger LOGGER = LoggerFactory.getLogger(UserFeignClientFallback.class);
 
     @Override
     public UserFeignClient create(Throwable throwable) {

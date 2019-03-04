@@ -29,7 +29,8 @@ public class OrderController {
     @Autowired
     private OrderService orderService;
 
-    @PostMapping("")
+
+    @PostMapping
     @ApiOperation(value = "创建订单")
     public ResponseEntity<OrderDTO> create(@ApiParam(value = "创建订单对象", required = true)
                                            @Valid @RequestBody OrderCreateDTO orderCreateDTO) {
@@ -38,7 +39,7 @@ public class OrderController {
                 .orElseThrow(() -> new CommonException("error.orders.create"));
     }
 
-    @PutMapping("")
+    @PutMapping
     @ApiOperation(value = "更新订单")
     public ResponseEntity<OrderDTO> update(@ApiParam(value = "订单更新对象", required = true)
                                            @Valid @RequestBody OrderUpdateDTO orderUpdateDTO) {
@@ -57,9 +58,7 @@ public class OrderController {
     @GetMapping("/query_by_user/{userId}")
     @ApiOperation(value = "根据订单id查询订单信息")
     public ResponseEntity<List<OrderDTO>> queryByUserId(@ApiParam(value = "用户id", required = true)
-                                              @PathVariable(name = "userId") Long userId) {
-        return Optional.ofNullable(orderService.queryByUserId(userId))
-                .map(result -> new ResponseEntity<>(result, HttpStatus.OK))
-                .orElseThrow(() -> new CommonException("error.orders.queryByUserId"));
+                                                        @PathVariable(name = "userId") Long userId) {
+        return new ResponseEntity<>(orderService.queryByUserId(userId), HttpStatus.OK);
     }
 }
