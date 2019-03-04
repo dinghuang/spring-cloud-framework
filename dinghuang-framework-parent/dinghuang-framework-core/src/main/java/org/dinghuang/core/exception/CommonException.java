@@ -68,7 +68,7 @@ public class CommonException extends RuntimeException {
     public Map<String, Object> toMap() {
         HashMap<String, Object> map = new LinkedHashMap<>();
         map.put("code", code);
-        map.put("message", super.getMessage());
+        map.put("messages", super.getMessage());
         return map;
     }
 

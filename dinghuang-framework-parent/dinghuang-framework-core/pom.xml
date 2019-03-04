@@ -19,24 +19,16 @@
         <spring-boot>2.1.0.RELEASE</spring-boot>
         <fastjson>1.2.47</fastjson>
         <commons-lang>2.6</commons-lang>
-        <spring-beans>5.1.2.RELEASE</spring-beans>
         <commons-collections>3.2.2</commons-collections>
         <commons-lang3>3.8.1</commons-lang3>
-        <commons-collections4>4.2</commons-collections4>
         <spring-context>5.1.2.RELEASE</spring-context>
         <swagger-annotations>1.5.16</swagger-annotations>
-        <druid>1.1.6</druid>
         <springfox-swagger2>2.7.0</springfox-swagger2>
-        <spring-websocket>5.0.6.RELEASE</spring-websocket>
-        <spring-mobile-device>1.1.5.RELEASE</spring-mobile-device>
-        <commons-codec>1.11</commons-codec>
-        <io.jsonwebtoken>0.9.1</io.jsonwebtoken>
+        <druid>1.1.10</druid>
         <mybatis-plus-boot-starter>3.1.0</mybatis-plus-boot-starter>
-        <mybatis-plus-generator>3.1.0</mybatis-plus-generator>
         <feign-hystrix>9.5.0</feign-hystrix>
         <lombok>1.16.20</lombok>
         <h2>1.4.198</h2>
-        <freemarker>2.3.28</freemarker>
     </properties>
 
     <dependencies>
@@ -59,12 +51,6 @@
             <scope>compile</scope>
         </dependency>
         <dependency>
-            <groupId>org.springframework</groupId>
-            <artifactId>spring-beans</artifactId>
-            <version>${spring-beans}</version>
-            <scope>compile</scope>
-        </dependency>
-        <dependency>
             <groupId>commons-collections</groupId>
             <artifactId>commons-collections</artifactId>
             <version>${commons-collections}</version>
@@ -74,12 +60,6 @@
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-lang3</artifactId>
             <version>${commons-lang3}</version>
-            <scope>compile</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.commons</groupId>
-            <artifactId>commons-collections4</artifactId>
-            <version>${commons-collections4}</version>
             <scope>compile</scope>
         </dependency>
         <dependency>
@@ -95,7 +75,7 @@
         </dependency>
         <dependency>
             <groupId>com.alibaba</groupId>
-            <artifactId>druid</artifactId>
+            <artifactId>druid-spring-boot-starter</artifactId>
             <version>${druid}</version>
             <scope>compile</scope>
         </dependency>
@@ -110,34 +90,6 @@
             <artifactId>springfox-swagger-ui</artifactId>
             <version>${springfox-swagger2}</version>
         </dependency>
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-security</artifactId>
-            <version>${spring-boot}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework</groupId>
-            <artifactId>spring-websocket</artifactId>
-            <version>${spring-websocket}</version>
-            <scope>compile</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.mobile</groupId>
-            <artifactId>spring-mobile-device</artifactId>
-            <version>${spring-mobile-device}</version>
-            <scope>compile</scope>
-        </dependency>
-        <dependency>
-            <groupId>io.jsonwebtoken</groupId>
-            <artifactId>jjwt</artifactId>
-            <version>${io.jsonwebtoken}</version>
-            <scope>compile</scope>
-        </dependency>
-        <dependency>
-            <groupId>commons-codec</groupId>
-            <artifactId>commons-codec</artifactId>
-            <version>${commons-codec}</version>
-        </dependency>
         <!-- mybatis plus -->
         <dependency>
             <groupId>org.projectlombok</groupId>
@@ -150,33 +102,28 @@
             <version>${mybatis-plus-boot-starter}</version>
         </dependency>
         <dependency>
-            <groupId>com.h2database</groupId>
-            <artifactId>h2</artifactId>
-            <version>${h2}</version>
-            <scope>runtime</scope>
-        </dependency>
-        <!-- 代码生成器 -->
-        <dependency>
-            <groupId>com.baomidou</groupId>
-            <artifactId>mybatis-plus-generator</artifactId>
-            <version>${mybatis-plus-generator}</version>
-        </dependency>
-        <!-- freemarker 模板引擎 -->
-        <dependency>
-            <groupId>org.freemarker</groupId>
-            <artifactId>freemarker</artifactId>
-            <version>${freemarker}</version>
-        </dependency>
-        <dependency>
             <groupId>javax</groupId>
             <artifactId>javaee-api</artifactId>
             <version>8.0</version>
             <scope>provided</scope>
         </dependency>
+        <!--<dependency>-->
+            <!--<groupId>com.h2database</groupId>-->
+            <!--<artifactId>h2</artifactId>-->
+            <!--<version>${h2}</version>-->
+            <!--<scope>runtime</scope>-->
+        <!--</dependency>-->
     </dependencies>
 
     <build>
         <finalName>dinghuang-framework-core</finalName>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.6.2</version>
+            </plugin>
+        </plugins>
     </build>
 
     <distributionManagement>

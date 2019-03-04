@@ -2,9 +2,12 @@ package org.dinghuang.core.mybatis.config;
 
 import com.baomidou.mybatisplus.core.handlers.MetaObjectHandler;
 import org.apache.ibatis.reflection.MetaObject;
+import org.dinghuang.core.mybatis.model.enums.BaseModelEnum;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
+
+import java.util.Date;
 
 /**
  * 审计字段逻辑
@@ -19,16 +22,22 @@ public class CustomMetaObjectHandler implements MetaObjectHandler {
 
     @Override
     public void insertFill(MetaObject metaObject) {
-        LOGGER.info("start insert fill ....");
         //todo 获取当前登录用户填入
-        this.setInsertFieldValByName("createUser", "", metaObject);
-        this.setInsertFieldValByName("createDate", "", metaObject);
+        Date date = new Date();
+        this.setInsertFieldValByName(BaseModelEnum.CREATE_USER.value(), 16320L, metaObject);
+        this.setInsertFieldValByName(BaseModelEnum.CREATE_DATE.value(), date, metaObject);
+        this.setInsertFieldValByName(BaseModelEnum.LOCKED.value(), 0, metaObject);
+        this.setInsertFieldValByName(BaseModelEnum.LOCK_USER.value(), 0L, metaObject);
+        this.setInsertFieldValByName(BaseModelEnum.LOCK_DATE.value(), date, metaObject);
+        this.setInsertFieldValByName(BaseModelEnum.LOCK_KEY.value(), null, metaObject);
+        this.setInsertFieldValByName(BaseModelEnum.UPDATE_USER.value(), 16320L, metaObject);
+        this.setInsertFieldValByName(BaseModelEnum.UPDATE_DATE.value(), date, metaObject);
     }
 
     @Override
     public void updateFill(MetaObject metaObject) {
-        this.setInsertFieldValByName("updateUser", "", metaObject);
-        this.setInsertFieldValByName("updateDate", "", metaObject);
+        this.setInsertFieldValByName(BaseModelEnum.UPDATE_DATE.value(), 16320L, metaObject);
+        this.setInsertFieldValByName(BaseModelEnum.UPDATE_DATE.value(), new Date(), metaObject);
 
 
     }

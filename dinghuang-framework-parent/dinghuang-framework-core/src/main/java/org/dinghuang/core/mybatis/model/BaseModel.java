@@ -12,14 +12,14 @@ import java.util.Date;
 @Data
 public abstract class BaseModel {
 
-    @TableId(value = "UUID", type = IdType.ID_WORKER)
-    protected String uuid;
+    @TableId(type = IdType.ID_WORKER)
+    protected Long uuid;
 
     @TableField(fill = FieldFill.INSERT_UPDATE)
-    protected String updateUser;
+    protected Long updateUser;
 
     @TableField(fill = FieldFill.INSERT)
-    protected String createUser;
+    protected Long createUser;
 
     @TableField(fill = FieldFill.INSERT)
     protected Date createDate;
@@ -27,13 +27,17 @@ public abstract class BaseModel {
     @TableField(fill = FieldFill.INSERT_UPDATE)
     protected Date updateDate;
 
-    protected String locked;
+    @TableField(fill = FieldFill.INSERT)
+    protected Integer locked;
 
-    protected String lockUser;
+    @TableField(fill = FieldFill.INSERT)
+    protected Long lockUser;
 
+    @TableField(fill = FieldFill.INSERT)
     protected Date lockDate;
 
-    protected Date lockKey;
+    @TableField(fill = FieldFill.INSERT)
+    protected String lockKey;
 
     @Version
     protected Integer version;

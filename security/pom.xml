@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <artifactId>dinghuang-framework-parent</artifactId>
+        <groupId>org.dinghuang</groupId>
+        <version>0.1.0.RELEASE</version>
+    </parent>
+
+    <artifactId>security</artifactId>
+    <version>0.1.0.RELEASE</version>
+
+    <properties>
+        <java.version>1.8</java.version>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+        <dinghuang-framework-core>0.1.0.RELEASE</dinghuang-framework-core>
+        <spring-boot>2.1.0.RELEASE</spring-boot>
+        <io.jsonwebtoken>0.9.1</io.jsonwebtoken>
+        <spring-mobile-device>1.1.5.RELEASE</spring-mobile-device>
+        <commons-codec>1.11</commons-codec>
+    </properties>
+
+    <dependencies>
+        <dependency>
+            <groupId>org.dinghuang</groupId>
+            <artifactId>dinghuang-framework-core</artifactId>
+            <version>${dinghuang-framework-core}</version>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-security</artifactId>
+            <version>${spring-boot}</version>
+        </dependency>
+        <dependency>
+            <groupId>io.jsonwebtoken</groupId>
+            <artifactId>jjwt</artifactId>
+            <version>${io.jsonwebtoken}</version>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.mobile</groupId>
+            <artifactId>spring-mobile-device</artifactId>
+            <version>${spring-mobile-device}</version>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>commons-codec</groupId>
+            <artifactId>commons-codec</artifactId>
+            <version>${commons-codec}</version>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <finalName>dinghuang-framework-security</finalName>
+    </build>
+
+    <distributionManagement>
+        <repository>
+            <id>huarun</id>
+            <name>Releases</name>
+            <url>http://nexuss.strongsickcat.com:8080/repository/huarun-release/</url>
+        </repository>
+        <snapshotRepository>
+            <id>huarun</id>
+            <name>Snapshot</name>
+            <url>http://nexuss.strongsickcat.com:8080/repository/huarun-snapshot/</url>
+        </snapshotRepository>
+    </distributionManagement>
+
+</project>

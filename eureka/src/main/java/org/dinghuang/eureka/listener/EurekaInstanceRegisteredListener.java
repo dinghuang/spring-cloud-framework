@@ -21,7 +21,7 @@ public class EurekaInstanceRegisteredListener implements ApplicationListener<Eur
         if (eurekaInstanceRegisteredEvent.isReplication()) {
             try {
                 InstanceInfo instanceInfo = eurekaInstanceRegisteredEvent.getInstanceInfo();
-                logger.info("a instance up {}", instanceInfo.toString());
+                logger.info("enums instance up {}", instanceInfo.toString());
             } catch (Exception e) {
                 logger.error(e.getMessage());
             }

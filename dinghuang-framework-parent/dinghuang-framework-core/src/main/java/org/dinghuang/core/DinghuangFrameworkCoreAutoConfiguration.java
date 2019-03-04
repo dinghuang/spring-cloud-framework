@@ -1,6 +1,7 @@
 package org.dinghuang.core;
 
 import org.dinghuang.core.utils.SpringContextUtils;
+import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -11,6 +12,7 @@ import org.springframework.context.annotation.Configuration;
  * @since 2019/2/26
  */
 @Configuration
+@MapperScan("org.dinghuang.infra.repository.*")
 public class DinghuangFrameworkCoreAutoConfiguration {
 
     @Bean
