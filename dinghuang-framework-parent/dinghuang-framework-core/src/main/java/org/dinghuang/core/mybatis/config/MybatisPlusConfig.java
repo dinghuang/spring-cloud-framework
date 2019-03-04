@@ -4,10 +4,8 @@ import com.baomidou.mybatisplus.core.parser.ISqlParser;
 import com.baomidou.mybatisplus.extension.parsers.BlockAttackSqlParser;
 import com.baomidou.mybatisplus.extension.plugins.OptimisticLockerInterceptor;
 import com.baomidou.mybatisplus.extension.plugins.PaginationInterceptor;
-import com.baomidou.mybatisplus.extension.plugins.PerformanceInterceptor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Profile;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 import java.util.ArrayList;
@@ -34,16 +32,6 @@ public class MybatisPlusConfig {
         sqlParserList.add(new BlockAttackSqlParser());
         paginationInterceptor.setSqlParserList(sqlParserList);
         return paginationInterceptor;
-    }
-
-    /**
-     * SQL执行效率插件
-     * 设置 dev test 环境开启
-     */
-    @Bean
-    @Profile({"dev", "test"})
-    public PerformanceInterceptor performanceInterceptor() {
-        return new PerformanceInterceptor();
     }
 
     /**

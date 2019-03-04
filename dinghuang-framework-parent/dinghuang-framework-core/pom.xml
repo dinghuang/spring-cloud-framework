@@ -28,7 +28,9 @@
         <mybatis-plus-boot-starter>3.1.0</mybatis-plus-boot-starter>
         <feign-hystrix>9.5.0</feign-hystrix>
         <lombok>1.16.20</lombok>
-        <h2>1.4.198</h2>
+        <mysql-connector-java>8.0.15</mysql-connector-java>
+        <liquibase-core>3.5.3</liquibase-core>
+        <javaee-api>8.0</javaee-api>
     </properties>
 
     <dependencies>
@@ -104,13 +106,18 @@
         <dependency>
             <groupId>javax</groupId>
             <artifactId>javaee-api</artifactId>
-            <version>8.0</version>
+            <version>${javaee-api}</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>org.liquibase</groupId>
             <artifactId>liquibase-core</artifactId>
-            <version>3.5.3</version>
+            <version>${liquibase-core}</version>
+        </dependency>
+        <dependency>
+            <groupId>mysql</groupId>
+            <artifactId>mysql-connector-java</artifactId>
+            <version>${mysql-connector-java}</version>
         </dependency>
     </dependencies>
 

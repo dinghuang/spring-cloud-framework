@@ -3,7 +3,7 @@ package org.dinghuang.core.mybatis.config;
 import com.baomidou.mybatisplus.core.injector.AbstractMethod;
 import com.baomidou.mybatisplus.core.injector.AbstractSqlInjector;
 import com.baomidou.mybatisplus.core.injector.methods.*;
-import org.dinghuang.core.mybatis.injector.UpdateBySelect;
+import org.dinghuang.core.mybatis.injector.QueryAll;
 import org.springframework.context.annotation.Configuration;
 
 import java.util.List;
@@ -12,6 +12,8 @@ import java.util.stream.Stream;
 import static java.util.stream.Collectors.toList;
 
 /**
+ * 自定义mapper中的方法实现
+ *
  * @author dinghuang123@gmail.com
  * @since 2019/2/27
  */
@@ -37,7 +39,7 @@ public class SqlInjectorConfig extends AbstractSqlInjector {
                 new SelectObjs(),
                 new SelectList(),
                 new SelectPage(),
-                new UpdateBySelect()
+                new QueryAll()
         ).collect(toList());
     }
 }
