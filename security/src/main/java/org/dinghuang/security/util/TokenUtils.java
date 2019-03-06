@@ -3,7 +3,7 @@ package org.dinghuang.security.util;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
-import org.apache.commons.lang.time.DateFormatUtils;
+import org.apache.commons.lang3.time.DateFormatUtils;
 import org.dinghuang.security.exception.AuthenticationException;
 import org.dinghuang.security.model.SecurityUser;
 import org.slf4j.Logger;

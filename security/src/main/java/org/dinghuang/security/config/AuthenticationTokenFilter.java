@@ -1,8 +1,8 @@
 package org.dinghuang.security.config;
 
 import com.alibaba.fastjson.JSON;
-import org.apache.commons.lang.time.DateUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.time.DateUtils;
 import org.dinghuang.security.exception.AuthenticationException;
 import org.dinghuang.security.service.UserPermissionService;
 import org.dinghuang.security.util.TokenUtils;

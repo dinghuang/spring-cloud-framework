@@ -1,59 +1,44 @@
 package org.dinghuang.core.service;
 
-import org.dinghuang.core.model.ModelValidator;
-import org.dinghuang.core.mybatis.model.BaseModel;
+import javax.validation.Validator;
 
-import java.util.Set;
+import org.dinghuang.core.model.ValidatorProvider;
+import org.dinghuang.core.model.ViolationBuild;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  * @author dinghuang123@gmail.com
  * @since 2019/2/27
  */
-public interface BaseService<T extends BaseModel> {
+public abstract class BaseService {
 
-    /**
-     * 数据校验
-     */
-    default void validate(T t) {
-        //todo 默认数据校验 javax
-        ModelValidator.validate(t);
+    private static final Logger LOGGER = LoggerFactory.getLogger(BaseService.class);
+
+    @Autowired
+    protected Validator validator;
+
+    private ValidatorProvider validatorProvider;
+
+    protected ValidatorProvider getValidatorProvider() {
+        if (validatorProvider == null) {
+            validatorProvider = new ValidatorProvider(validator);
+        }
+        return validatorProvider;
     }
 
     /**
-     * 保存
+     * 对象验证
+     *
+     * @param object object
      */
-    default T create(T t) {
-        //todo 保存
-        return t;
+    protected void ValidatorData(Object object) {
+        ValidatorProvider validatorProvider = getValidatorProvider();
+        ViolationBuild validateFlaw = validatorProvider.validate(object);
+        LOGGER.info(validateFlaw.getMessage());
+        System.out.println();
     }
 
-    /**
-     * 删除
-     */
-    default void deleteById(String id) {
-        //todo 删除
-    }
-
-    /**
-     * 批量删除
-     */
-    default void batchDelete(Set<String> ids) {
-        //todo 批量删除
-    }
-
-    /**
-     * 批量创建
-     */
-    default void batchCreate(Set<T> list) {
-        //todo 批量创建
-    }
-
-    /**
-     * 查询单个
-     */
-    default T queryById(String id) {
-        //todo 查询单个
-        return null;
-    }
 
 }
