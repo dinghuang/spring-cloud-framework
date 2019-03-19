@@ -2,8 +2,12 @@ package org.dinghuang.core.mybatis;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.baomidou.mybatisplus.core.toolkit.Constants;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.ibatis.annotations.Param;
+import org.dinghuang.core.mybatis.model.BaseModel;
+import org.dinghuang.core.mybatis.model.Lock;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -12,20 +16,20 @@ import java.util.List;
  * @author dinghuang123@gmail.com
  * @since 2019/3/4
  */
-public interface BaseRepository<T> extends BaseMapper<T> {
+public interface BaseRepository<T extends BaseModel> extends BaseMapper<T> {
 
-//    /**
-//     * 根据用户id查询列表
-//     *
-//     * @param userId 用户id
-//     * @return int
-//     */
-//    List<T> queryByUserId(@Param(Constants.ENTITY) Long userId);
+    Lock queryLock(@Param("id") String id);
 
-    /**
-     * 查询所有
-     *
-     * @return List
-     */
-    List<T> queryAll();
+    int lockRecord(@Param("id") String id, @Param("isLocked") boolean isLocked, @Param("lockUser") String lockUser, @Param("lockDate") Date lockDate, @Param("lockKey") String lockKey);
+
+    int unlock(@Param("id") String id, @Param("lockKey") String lockKey);
+
+    default int insertOrUpdate(T t) {
+        if (t.getUuid() != null && t.getVersion() != null) {
+            return this.updateById(t);
+        } else {
+            t.setVersion(0);
+            return this.insert(t);
+        }
+    }
 }
