@@ -1,4 +1,4 @@
-package org.dinghuang.core.mybatis.model;
+package org.dinghuang.core.model;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

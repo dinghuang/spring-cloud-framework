@@ -2,8 +2,8 @@ package org.dinghuang.core.service;
 
 import org.apache.commons.lang3.StringUtils;
 import org.dinghuang.core.exception.CommonException;
-import org.dinghuang.core.mybatis.model.ValidatorProvider;
-import org.dinghuang.core.mybatis.model.ViolationBuild;
+import org.dinghuang.core.model.ValidatorProvider;
+import org.dinghuang.core.model.ViolationBuild;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;

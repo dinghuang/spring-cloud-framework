@@ -1,9 +1,7 @@
-package org.dinghuang.core.mybatis.model;
+package org.dinghuang.core.model;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import javax.validation.ConstraintViolation;
 import javax.validation.ValidationException;
@@ -17,18 +15,16 @@ import java.util.Set;
 @Data
 @AllArgsConstructor
 public class ValidatorProvider {
-
-    private static final Logger LOGGER = LoggerFactory.getLogger(ValidatorProvider.class);
-
     private final Validator validator;
 
     public <T> ViolationBuild validate(T object) {
         Set<ConstraintViolation<T>> violations;
         try {
             violations = validator.validate(object);
-        } catch (IllegalArgumentException | ValidationException e) {
-            LOGGER.error(e.getMessage());
-            throw e;
+        } catch (IllegalArgumentException iae) {
+            throw iae;
+        } catch (ValidationException ve) {
+            throw ve;
         }
         return ViolationBuild.build(violations);
     }
@@ -37,9 +33,10 @@ public class ValidatorProvider {
         Set<ConstraintViolation<T>> violations;
         try {
             violations = validator.validate(object, groups);
-        } catch (IllegalArgumentException | ValidationException e) {
-            LOGGER.error(e.getMessage());
-            throw e;
+        } catch (IllegalArgumentException iae) {
+            throw iae;
+        } catch (ValidationException ve) {
+            throw ve;
         }
         return ViolationBuild.build(violations);
     }
@@ -48,9 +45,10 @@ public class ValidatorProvider {
         Set<ConstraintViolation<T>> violations;
         try {
             violations = validator.validateProperty(object, propertyName, groups);
-        } catch (IllegalArgumentException | ValidationException e) {
-            LOGGER.error(e.getMessage());
-            throw e;
+        } catch (IllegalArgumentException iae) {
+            throw iae;
+        } catch (ValidationException ve) {
+            throw ve;
         }
         return ViolationBuild.build(violations);
     }
@@ -59,9 +57,10 @@ public class ValidatorProvider {
         Set<ConstraintViolation<T>> violations;
         try {
             violations = validator.validateValue(beanType, propertyName, value, groups);
-        } catch (IllegalArgumentException | ValidationException e) {
-            LOGGER.error(e.getMessage());
-            throw e;
+        } catch (IllegalArgumentException iae) {
+            throw iae;
+        } catch (ValidationException ve) {
+            throw ve;
         }
         return ViolationBuild.build(violations);
     }

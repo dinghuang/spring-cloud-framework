@@ -1,4 +1,4 @@
-package org.dinghuang.core.mybatis.model;
+package org.dinghuang.core.model;
 
 
 import lombok.AllArgsConstructor;
@@ -12,7 +12,7 @@ import java.io.Serializable;
  */
 @Data
 @AllArgsConstructor
-public class Violation implements Serializable {
+public class Violation  implements Serializable {
 
     private static final long serialVersionUID = 8569050752246587169L;
 
