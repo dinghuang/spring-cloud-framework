@@ -61,4 +61,11 @@ public class OrderController {
                                                         @PathVariable(name = "userId") Long userId) {
         return new ResponseEntity<>(orderService.queryByUserId(userId), HttpStatus.OK);
     }
+
+    @DeleteMapping("/delete/{id}")
+    @ApiOperation(value = "根据订单id查询订单信息")
+    public void deleteById(@ApiParam(value = "主键", required = true)
+                                                        @PathVariable(name = "id") Long id) {
+       orderService.deleteById(id);
+    }
 }

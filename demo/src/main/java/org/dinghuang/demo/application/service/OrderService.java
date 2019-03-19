@@ -1,6 +1,7 @@
 package org.dinghuang.demo.application.service;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import org.dinghuang.core.exception.CommonException;
 import org.dinghuang.core.mybatis.model.enums.BaseModelEnum;
 import org.dinghuang.demo.application.dto.OrderCreateDTO;
 import org.dinghuang.demo.application.dto.OrderDTO;
@@ -45,8 +46,11 @@ public class OrderService {
     @Transactional(rollbackFor = Exception.class)
     public OrderDTO create(OrderCreateDTO orderCreateDTO) {
         OrderDO orderDO = OrderMapper.INSTANCE.createToDo(orderCreateDTO);
-        orderRepository.insert(orderDO);
-        return queryById(orderDO.getUuid());
+        if (orderRepository.insert(orderDO) == 1) {
+            return queryById(orderDO.getUuid());
+        } else {
+            throw new CommonException("error.order.insert");
+        }
     }
 
     /**
@@ -58,8 +62,11 @@ public class OrderService {
     @Transactional(rollbackFor = Exception.class)
     public OrderDTO update(OrderUpdateDTO orderUpdateDTO) {
         OrderDO orderDO = OrderMapper.INSTANCE.updateToDo(orderUpdateDTO);
-        orderRepository.updateById(orderDO);
-        return queryById(orderDO.getUuid());
+        if (orderRepository.updateById(orderDO) == 1) {
+            return queryById(orderDO.getUuid());
+        } else {
+            throw new CommonException("error.order.update");
+        }
     }
 
     /**
@@ -75,5 +82,12 @@ public class OrderService {
 //                .eq(true,OrderEnum.CUSTOMER_NAME.value(),userId);
 //        return OrderMapper.INSTANCE.doToDtos(orderRepository.selectList(orderDOQueryWrapper));
         return OrderMapper.INSTANCE.doToDtos(orderRepository.queryAllByUserId(userId));
+    }
+
+    @Transactional(rollbackFor = Exception.class)
+    public void deleteById(Long id) {
+        if (orderRepository.deleteById(id) != 1) {
+            throw new CommonException("error.order.delete");
+        }
     }
 }
