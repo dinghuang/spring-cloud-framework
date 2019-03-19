@@ -72,14 +72,19 @@
                     </compilerArgs>
                 </configuration>
             </plugin>
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+            </plugin>
         </plugins>
     </build>
 
+
     <repositories>
         <repository>
-            <id>spring-milestones</id>
-            <name>Spring Milestones</name>
-            <url>https://repo.spring.io/milestone</url>
+            <id>huarun</id>
+            <name>Releases</name>
+            <url>http://nexuss.strongsickcat.com:8080/repository/huarun-release/</url>
         </repository>
     </repositories>
 

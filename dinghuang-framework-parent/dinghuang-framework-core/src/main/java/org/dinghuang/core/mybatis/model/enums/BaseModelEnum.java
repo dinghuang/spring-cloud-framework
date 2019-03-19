@@ -6,14 +6,14 @@ package org.dinghuang.core.mybatis.model.enums;
  */
 public enum BaseModelEnum {
     UUID("uuid"),
-    UPDATE_USER("updateUser"),
-    CREATE_USER("createUser"),
-    CREATE_DATE("createDate"),
-    UPDATE_DATE("updateDate"),
+    UPDATE_USER("update_user"),
+    CREATE_USER("create_user"),
+    CREATE_DATE("create_date"),
+    UPDATE_DATE("update_date"),
     LOCKED("locked"),
-    LOCK_USER("lockUser"),
-    LOCK_DATE("lockDate"),
-    LOCK_KEY("lockKey"),
+    LOCK_USER("lock_user"),
+    LOCK_DATE("lock_date"),
+    LOCK_KEY("lock_key"),
     VERSION("version");
 
     private String value;

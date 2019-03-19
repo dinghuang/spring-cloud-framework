@@ -1,7 +1,12 @@
 package org.dinghuang.core;
 
+import org.dinghuang.core.config.Swagger2Configuration;
+import org.dinghuang.core.mybatis.config.CustomMetaObjectConfiguration;
+import org.dinghuang.core.mybatis.config.MybatisPlusConfiguration;
+import org.dinghuang.core.mybatis.config.SqlInjectorConfiguration;
 import org.dinghuang.core.utils.SpringContextUtils;
-import org.mybatis.spring.annotation.MapperScan;
+import org.springframework.boot.autoconfigure.ImportAutoConfiguration;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnWebApplication;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -12,7 +17,12 @@ import org.springframework.context.annotation.Configuration;
  * @since 2019/2/26
  */
 @Configuration
-@MapperScan("org.dinghuang.infra.repository.*")
+@ConditionalOnWebApplication
+@ImportAutoConfiguration(value = {
+        Swagger2Configuration.class,
+        MybatisPlusConfiguration.class,
+        SqlInjectorConfiguration.class,
+        CustomMetaObjectConfiguration.class})
 public class DinghuangFrameworkCoreAutoConfiguration {
 
     @Bean

@@ -3,7 +3,9 @@ package org.dinghuang.core.mybatis.config;
 import com.baomidou.mybatisplus.core.injector.AbstractMethod;
 import com.baomidou.mybatisplus.core.injector.AbstractSqlInjector;
 import com.baomidou.mybatisplus.core.injector.methods.*;
-import org.dinghuang.core.mybatis.injector.QueryAll;
+import org.dinghuang.core.mybatis.injector.LockRecord;
+import org.dinghuang.core.mybatis.injector.QueryLock;
+import org.dinghuang.core.mybatis.injector.Unlock;
 import org.springframework.context.annotation.Configuration;
 
 import java.util.List;
@@ -18,7 +20,7 @@ import static java.util.stream.Collectors.toList;
  * @since 2019/2/27
  */
 @Configuration
-public class SqlInjectorConfig extends AbstractSqlInjector {
+public class SqlInjectorConfiguration extends AbstractSqlInjector {
     @Override
     public List<AbstractMethod> getMethodList() {
         return Stream.of(
@@ -39,7 +41,9 @@ public class SqlInjectorConfig extends AbstractSqlInjector {
                 new SelectObjs(),
                 new SelectList(),
                 new SelectPage(),
-                new QueryAll()
+                new LockRecord(),
+                new QueryLock(),
+                new Unlock()
         ).collect(toList());
     }
 }

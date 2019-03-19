@@ -1,10 +1,13 @@
 package org.dinghuang.demo.application.service;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import org.dinghuang.core.mybatis.model.enums.BaseModelEnum;
 import org.dinghuang.demo.application.dto.OrderCreateDTO;
 import org.dinghuang.demo.application.dto.OrderDTO;
 import org.dinghuang.demo.application.dto.OrderUpdateDTO;
 import org.dinghuang.demo.application.mapper.OrderMapper;
 import org.dinghuang.demo.infra.dataobject.OrderDO;
+import org.dinghuang.demo.infra.dataobject.enums.OrderEnum;
 import org.dinghuang.demo.infra.repository.OrderRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -66,7 +69,11 @@ public class OrderService {
      * @return List
      */
     public List<OrderDTO> queryByUserId(Long userId) {
-//        orderRepository.queryAll();
+//        QueryWrapper<OrderDO> orderDOQueryWrapper = new QueryWrapper<>();
+//        orderDOQueryWrapper.eq(true,BaseModelEnum.CREATE_USER.value(),userId)
+//                .orderByDesc(BaseModelEnum.CREATE_DATE.value())
+//                .eq(true,OrderEnum.CUSTOMER_NAME.value(),userId);
+//        return OrderMapper.INSTANCE.doToDtos(orderRepository.selectList(orderDOQueryWrapper));
         return OrderMapper.INSTANCE.doToDtos(orderRepository.queryAllByUserId(userId));
     }
 }

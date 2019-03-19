@@ -20,7 +20,7 @@ import java.util.List;
  */
 @Configuration
 @EnableTransactionManagement
-public class MybatisPlusConfig {
+public class MybatisPlusConfiguration {
     /**
      * 分页插件
      */
