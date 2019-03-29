@@ -19,6 +19,6 @@ public class CustomerDeleteBatchByIds extends AbstractMethod {
         String sql = String.format(sqlMethod.getSql(), tableInfo.getTableName(), tableInfo.getKeyColumn(),
                 SqlScriptUtils.convertForeach("#{item}", COLLECTION, null, "item", COMMA));
         SqlSource sqlSource = languageDriver.createSqlSource(configuration, sql, Object.class);
-        return this.addDeleteMappedStatement(mapperClass, sqlMethod.getMethod(), sqlSource);
+        return this.addDeleteMappedStatement(mapperClass, "customerDeleteBatchByIds", sqlSource);
     }
 }
