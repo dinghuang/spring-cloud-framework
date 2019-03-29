@@ -2,6 +2,8 @@ package org.dinghuang.core.mybatis.model;
 
 import com.baomidou.mybatisplus.annotation.*;
 import lombok.Data;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.Date;
 
@@ -12,34 +14,28 @@ import java.util.Date;
 @Data
 public abstract class BaseModel {
 
-    @TableId(type = IdType.ID_WORKER)
-    protected Long uuid;
+    private static final Logger LOGGER = LoggerFactory.getLogger(BaseModel.class);
+
+    @TableField(fill = FieldFill.INSERT, strategy = FieldStrategy.NOT_NULL)
+    protected String createdBy;
+
+    @TableField(fill = FieldFill.INSERT, strategy = FieldStrategy.NOT_NULL)
+    protected String createdByName;
+
+    @TableField(fill = FieldFill.INSERT, strategy = FieldStrategy.NOT_NULL)
+    protected Date creationDate;
 
     @TableField(fill = FieldFill.INSERT_UPDATE, strategy = FieldStrategy.NOT_NULL)
-    protected Long updateUser;
-
-    @TableField(fill = FieldFill.INSERT, strategy = FieldStrategy.NOT_NULL)
-    protected Long createUser;
-
-    @TableField(fill = FieldFill.INSERT, strategy = FieldStrategy.NOT_NULL)
-    protected Date createDate;
+    protected String lastUpdatedBy;
 
     @TableField(fill = FieldFill.INSERT_UPDATE, strategy = FieldStrategy.NOT_NULL)
-    protected Date updateDate;
+    protected String lastUpdatedByName;
 
-    @TableField(fill = FieldFill.INSERT, strategy = FieldStrategy.NOT_NULL)
-    protected Integer locked;
-
-    @TableField(fill = FieldFill.INSERT, strategy = FieldStrategy.NOT_NULL)
-    protected Long lockUser;
-
-    @TableField(fill = FieldFill.INSERT, strategy = FieldStrategy.NOT_NULL)
-    protected Date lockDate;
-
-    @TableField(fill = FieldFill.INSERT)
-    protected String lockKey;
+    @TableField(fill = FieldFill.INSERT_UPDATE, strategy = FieldStrategy.NOT_NULL)
+    protected Date lastUpdatedDate;
 
     @Version
-    protected Integer version;
+    protected Long objectVersionNumber;
 
 }
+

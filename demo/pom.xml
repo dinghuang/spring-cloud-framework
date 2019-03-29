@@ -6,7 +6,7 @@
     <parent>
         <groupId>org.dinghuang</groupId>
         <artifactId>dinghuang-framework-parent</artifactId>
-        <version>0.1.0.RELEASE</version>
+        <version>0.1.0-RELEASE</version>
     </parent>
 
     <groupId>com.example</groupId>
@@ -26,7 +26,7 @@
         <dependency>
             <groupId>org.dinghuang</groupId>
             <artifactId>dinghuang-framework-core</artifactId>
-            <version>0.1.0.RELEASE</version>
+            <version>0.1.0-RELEASE</version>
             <scope>compile</scope>
         </dependency>
         <dependency>

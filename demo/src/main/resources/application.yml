@@ -98,6 +98,8 @@ eureka:
 dinghuang:
   swagger:
     enabled: true
+  exception-intercept:
+    enabled: true
 logging:
   level:
     com.baomidou.mybatisplus.core: debug

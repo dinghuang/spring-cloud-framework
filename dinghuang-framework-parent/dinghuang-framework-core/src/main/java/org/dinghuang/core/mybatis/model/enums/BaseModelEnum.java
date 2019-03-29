@@ -5,16 +5,15 @@ package org.dinghuang.core.mybatis.model.enums;
  * @since 2019/3/4
  */
 public enum BaseModelEnum {
-    UUID("uuid"),
-    UPDATE_USER("update_user"),
-    CREATE_USER("create_user"),
-    CREATE_DATE("create_date"),
-    UPDATE_DATE("update_date"),
-    LOCKED("locked"),
-    LOCK_USER("lock_user"),
-    LOCK_DATE("lock_date"),
-    LOCK_KEY("lock_key"),
-    VERSION("version");
+
+    ID("id"),
+    CREATED_BY("created_by"),
+    CREATED_BY_NAME("created_by_name"),
+    CREATION_DATE("creation_date"),
+    LAST_UPDATED_BY("last_updated_by"),
+    LAST_UPDATED_BY_NAME("last_updated_by_name"),
+    LAST_UPDATED_DATE("last_updated_date"),
+    OBJECT_VERSION_NUMBER("object_version_number");
 
     private String value;
 

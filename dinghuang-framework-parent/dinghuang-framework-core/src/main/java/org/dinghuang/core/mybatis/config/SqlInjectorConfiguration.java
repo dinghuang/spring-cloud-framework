@@ -3,9 +3,7 @@ package org.dinghuang.core.mybatis.config;
 import com.baomidou.mybatisplus.core.injector.AbstractMethod;
 import com.baomidou.mybatisplus.core.injector.AbstractSqlInjector;
 import com.baomidou.mybatisplus.core.injector.methods.*;
-import org.dinghuang.core.mybatis.injector.LockRecord;
-import org.dinghuang.core.mybatis.injector.QueryLock;
-import org.dinghuang.core.mybatis.injector.Unlock;
+import org.dinghuang.core.mybatis.injector.CustomerDeleteBatchByIds;
 import org.springframework.context.annotation.Configuration;
 
 import java.util.List;
@@ -28,7 +26,6 @@ public class SqlInjectorConfiguration extends AbstractSqlInjector {
                 new Delete(),
                 new DeleteByMap(),
                 new DeleteById(),
-                new DeleteBatchByIds(),
                 new Update(),
                 new UpdateById(),
                 new SelectById(),
@@ -41,9 +38,7 @@ public class SqlInjectorConfiguration extends AbstractSqlInjector {
                 new SelectObjs(),
                 new SelectList(),
                 new SelectPage(),
-                new LockRecord(),
-                new QueryLock(),
-                new Unlock()
+                new CustomerDeleteBatchByIds()
         ).collect(toList());
     }
 }

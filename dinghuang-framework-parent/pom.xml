@@ -5,7 +5,7 @@
 
     <groupId>org.dinghuang</groupId>
     <artifactId>dinghuang-framework-parent</artifactId>
-    <version>0.1.0.RELEASE</version>
+    <version>0.1.0-RELEASE</version>
     <packaging>pom</packaging>
 
     <developers>

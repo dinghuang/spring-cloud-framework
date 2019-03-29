@@ -1,7 +1,0 @@
-<?xml version="1.0" encoding="UTF-8" ?>
-<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="org.dinghuang.demo.infra.repository.OrderRepository">
-    <select id="queryAllByUserId" resultType="org.dinghuang.demo.infra.dataobject.OrderDO">
-        select * from test_order where create_user = #{userId}
-    </select>
-</mapper>

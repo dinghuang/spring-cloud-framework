@@ -7,7 +7,7 @@
     <parent>
         <artifactId>dinghuang-framework-parent</artifactId>
         <groupId>org.dinghuang</groupId>
-        <version>0.1.0.RELEASE</version>
+        <version>0.1.0-RELEASE</version>
     </parent>
 
     <artifactId>dinghuang-framework-core</artifactId>
@@ -114,6 +114,17 @@
             <groupId>org.liquibase</groupId>
             <artifactId>liquibase-core</artifactId>
             <version>${liquibase-core}</version>
+        </dependency>
+        <!-- freemarker 模板引擎 -->
+        <dependency>
+            <groupId>org.freemarker</groupId>
+            <artifactId>freemarker</artifactId>
+            <version>2.3.28</version>
+        </dependency>
+        <!-- 引入spring bootactuator监控 -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-actuator</artifactId>
         </dependency>
     </dependencies>
 
