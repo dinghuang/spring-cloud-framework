@@ -294,26 +294,26 @@ public class CodeGeneratorUtils {
         }
         if (cover) {
             file.createNewFile();
+            FileOutputStream fos = new FileOutputStream(file);
+            dataMap.put("table_name_small", moduleName);
+            dataMap.put("table_name_full", this.tableName);
+            dataMap.put("table_name", replaceUnderLineAndUpperCase(moduleName));
+            dataMap.put("table_name_first_low", toLowerCaseFirstOne(replaceUnderLineAndUpperCase(moduleName)));
+            dataMap.put("author", AUTHOR);
+            dataMap.put("priMaryName", priMaryName);
+            dataMap.put("date", date);
+            dataMap.put("package_name", path);
+            dataMap.put("table_annotation", tableDescription);
+            dataMap.put("do_path", DO_PATH.replace("/", "."));
+            dataMap.put("repository_path", REPOSITORY_PATH.replace("/", "."));
+            dataMap.put("enum_path", ENUM_PATH.replace("/", "."));
+            dataMap.put("dto_path", DTO_PATH.replace("/", "."));
+            dataMap.put("mapper_path", MAPPER_PATH.replace("/", "."));
+            dataMap.put("service_path", SERVICE_PATH.replace("/", "."));
+            dataMap.put("controller_path", CONTROLLER_PATH.replace("/", "."));
+            Writer out = new BufferedWriter(new OutputStreamWriter(fos, "utf-8"), 10240);
+            template.process(dataMap, out);
         }
-        FileOutputStream fos = new FileOutputStream(file);
-        dataMap.put("table_name_small", moduleName);
-        dataMap.put("table_name_full", this.tableName);
-        dataMap.put("table_name", replaceUnderLineAndUpperCase(moduleName));
-        dataMap.put("table_name_first_low", toLowerCaseFirstOne(replaceUnderLineAndUpperCase(moduleName)));
-        dataMap.put("author", AUTHOR);
-        dataMap.put("priMaryName", priMaryName);
-        dataMap.put("date", date);
-        dataMap.put("package_name", path);
-        dataMap.put("table_annotation", tableDescription);
-        dataMap.put("do_path", DO_PATH.replace("/", "."));
-        dataMap.put("repository_path", REPOSITORY_PATH.replace("/", "."));
-        dataMap.put("enum_path", ENUM_PATH.replace("/", "."));
-        dataMap.put("dto_path", DTO_PATH.replace("/", "."));
-        dataMap.put("mapper_path", MAPPER_PATH.replace("/", "."));
-        dataMap.put("service_path", SERVICE_PATH.replace("/", "."));
-        dataMap.put("controller_path", CONTROLLER_PATH.replace("/", "."));
-        Writer out = new BufferedWriter(new OutputStreamWriter(fos, "utf-8"), 10240);
-        template.process(dataMap, out);
     }
 
     private static String toLowerCaseFirstOne(String s) {
@@ -334,6 +334,9 @@ public class CodeGeneratorUtils {
             if (num != -1) {
                 char ss = sb.charAt(count);
                 char ia = (char) (ss - 32);
+                if (Character.isDigit(ss)) {
+                    ia = ss;
+                }
                 sb.replace(count, count + 1, ia + "");
             }
         }

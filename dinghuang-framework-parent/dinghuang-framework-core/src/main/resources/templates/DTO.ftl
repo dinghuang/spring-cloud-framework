@@ -30,16 +30,16 @@ public class ${table_name}DTO extends BaseModelDTO {
     <#list model_column as model>
         <#if (model.columnType = 'VARCHAR' || model.columnType = 'TEXT')>
     @ApiModelProperty(notes = "${model.columnComment!}")
-    @Length(max = ${model.columnLength!}, min = 0, message = "${model.changeColumnName?uncap_first}:${table_annotation}的${model.columnComment!}长度不能超过${model.columnLength!}")
+    @Length(max = ${model.columnLength!}, min = 0, message = "${table_annotation}的${model.columnComment!}长度不能超过${model.columnLength!}")
             <#if (model.isNullAble)>
-    @NotBlank(message = "${model.changeColumnName?uncap_first}:${model.columnComment!}不能为空")
+    @NotBlank(message = "${table_annotation}的${model.columnComment!}不能为空")
             </#if>
     private String ${model.changeColumnName?uncap_first};
         </#if>
         <#if (model.columnType = 'BIGINT')>
     @ApiModelProperty(notes = "${model.columnComment!}")
             <#if (model.isNullAble)>
-    @NotNull(message = "${model.changeColumnName?uncap_first}:${model.columnComment!}不能为空")
+    @NotNull(message = "${table_annotation}的${model.columnComment!}不能为空")
             </#if>
     private Long ${model.changeColumnName?uncap_first};
         </#if>
@@ -47,21 +47,28 @@ public class ${table_name}DTO extends BaseModelDTO {
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     @ApiModelProperty(notes = "${model.columnComment!}")
             <#if (model.isNullAble)>
-    @NotNull(message = "${model.changeColumnName?uncap_first}:${model.columnComment!}不能为空")
+    @NotNull(message = "${table_annotation}的${model.columnComment!}不能为空")
             </#if>
     private Date ${model.changeColumnName?uncap_first};
         </#if>
         <#if model.columnType = 'TINYINT'>
     @ApiModelProperty(notes = "${model.columnComment!}")
             <#if (model.isNullAble)>
-    @NotNull(message = "${model.changeColumnName?uncap_first}:${model.columnComment!}不能为空")
+    @NotNull(message = "${table_annotation}的${model.columnComment!}不能为空")
             </#if>
     private Boolean ${model.changeColumnName?uncap_first};
+        </#if>
+        <#if model.columnType = 'DOUBLE'>
+    @ApiModelProperty(notes = "${model.columnComment!}")
+            <#if (model.isNullAble)>
+    @NotNull(message = "${table_annotation}的${model.columnComment!}不能为空")
+            </#if>
+    private Double ${model.changeColumnName?uncap_first};
         </#if>
         <#if model.columnType = 'DECIMAL'>
     @ApiModelProperty(notes = "${model.columnComment!}")
             <#if (model.isNullAble)>
-    @NotNull(message = "${model.changeColumnName?uncap_first}:${model.columnComment!}不能为空")
+    @NotNull(message = "${table_annotation}的${model.columnComment!}不能为空")
             </#if>
     private BigDecimal ${model.changeColumnName?uncap_first};
         </#if>

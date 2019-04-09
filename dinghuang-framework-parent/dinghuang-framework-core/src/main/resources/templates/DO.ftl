@@ -46,6 +46,10 @@ public class ${table_name}DO extends BaseModel {
     @TableField(value = "${model.columnName}")
     private Boolean ${model.changeColumnName?uncap_first};
         </#if>
+        <#if model.columnType = 'DOUBLE' >
+    @TableField(value = "${model.columnName}")
+    private Boolean ${model.changeColumnName?uncap_first};
+        </#if>
         <#if model.columnType = 'DECIMAL' >
     private BigDecimal ${model.changeColumnName?uncap_first};
         </#if>

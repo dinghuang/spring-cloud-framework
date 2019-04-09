@@ -92,10 +92,8 @@ public class ExceptionInterceptConfiguration {
         if (logging) {
             LOGGER.error("parameter verification failed{}", e);
         }
-        return new ResponseEntity<>(String.format("%s %s %s:%s",
+        return new ResponseEntity<>(String.format("%s%s",
                 ReposeEntityConstant.PARAMETER_VERIFICATION_FAILED,
-                e.getBindingResult().getObjectName(),
-                e.getBindingResult().getFieldError().getField(),
                 e.getBindingResult().getFieldError().getDefaultMessage()), HttpStatus.BAD_REQUEST);
     }
 
