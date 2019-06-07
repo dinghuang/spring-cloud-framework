@@ -13,7 +13,7 @@
     <groupId>org.dinguhang.gateway</groupId>
     <artifactId>gateway</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <name>eureka</name>
+    <name>gateway</name>
     <description>gateway project for Spring Boot</description>
 
     <properties>
@@ -22,8 +22,6 @@
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <springfox-swagger2>2.7.0</springfox-swagger2>
         <swagger-annotations>1.5.16</swagger-annotations>
-        <spring-cloud-starter>1.4.7.RELEASE</spring-cloud-starter>
-        <actuator>2.1.5.RELEASE</actuator>
     </properties>
 
     <dependencies>
@@ -40,7 +38,7 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-actuator</artifactId>
-            <version>${actuator}</version>
+            <version>${spring-boot}</version>
         </dependency>
         <dependency>
             <groupId>io.springfox</groupId>
@@ -58,7 +56,6 @@
             <artifactId>spring-cloud-starter-hystrix</artifactId>
             <version>${spring-cloud-starter}</version>
         </dependency>
-
     </dependencies>
 
     <build>
@@ -68,6 +65,7 @@
                 <artifactId>spring-boot-maven-plugin</artifactId>
             </plugin>
         </plugins>
+        <finalName>gateway</finalName>
     </build>
 
     <repositories>

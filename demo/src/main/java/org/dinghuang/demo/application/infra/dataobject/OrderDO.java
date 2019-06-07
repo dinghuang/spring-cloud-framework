@@ -1,12 +1,11 @@
 package org.dinghuang.demo.application.infra.dataobject;
 
-import com.baomidou.mybatisplus.annotation.*;
-import org.dinghuang.core.mybatis.model.BaseModel;
+import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableId;
+import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-
-import java.math.BigDecimal;
-import java.util.Date;
+import org.dinghuang.core.mybatis.model.BaseModel;
 
 /**
  * 订单DO

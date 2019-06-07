@@ -25,6 +25,7 @@
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <spring-boot>2.1.0.RELEASE</spring-boot>
         <spring-cloud-dependencies>Greenwich.RELEASE</spring-cloud-dependencies>
+        <spring-cloud-starter>1.4.7.RELEASE</spring-cloud-starter>
     </properties>
 
     <modules>
@@ -74,7 +75,6 @@
     </dependencies>
 
     <build>
-        <finalName>dinghuang-framework-parent</finalName>
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -82,6 +82,7 @@
                 <version>3.6.2</version>
             </plugin>
         </plugins>
+        <finalName>dinghuang-framework-parent</finalName>
     </build>
 
     <distributionManagement>

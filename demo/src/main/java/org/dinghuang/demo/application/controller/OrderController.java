@@ -39,7 +39,7 @@ public class OrderController {
     @PostMapping
     @ApiOperation(value = "创建订单")
     public ResponseEntity<OrderDTO> create(@ApiParam(value = "创建订单", required = true)
-                                                   @Valid @RequestBody OrderCreateDTO orderCreateDTO) {
+                                           @Valid @RequestBody OrderCreateDTO orderCreateDTO) {
         return Optional.ofNullable(orderService.create(orderCreateDTO))
                 .map(result -> new ResponseEntity<>(result, HttpStatus.CREATED))
                 .orElseThrow(() -> new CommonException("error.Order.create"));
@@ -48,7 +48,7 @@ public class OrderController {
     @PutMapping
     @ApiOperation(value = "更新订单")
     public ResponseEntity<OrderDTO> update(@ApiParam(value = "更新订单", required = true)
-                                                   @Valid @RequestBody OrderUpdateDTO orderUpdateDTO) {
+                                           @Valid @RequestBody OrderUpdateDTO orderUpdateDTO) {
         return Optional.ofNullable(orderService.update(orderUpdateDTO))
                 .map(result -> new ResponseEntity<>(result, HttpStatus.CREATED))
                 .orElseThrow(() -> new CommonException("error.Order.update"));
@@ -64,7 +64,7 @@ public class OrderController {
     @GetMapping("/{id}")
     @ApiOperation(value = "根据id查询订单")
     public ResponseEntity<OrderDTO> queryById(@ApiParam(value = "id", required = true)
-                                                      @PathVariable(name = "id") Long id) {
+                                              @PathVariable(name = "id") Long id) {
         return Optional.ofNullable(orderService.queryById(id))
                 .map(result -> new ResponseEntity<>(result, HttpStatus.OK))
                 .orElseThrow(() -> new CommonException("error.Order.queryById"));
@@ -81,7 +81,7 @@ public class OrderController {
     @PostMapping(value = "/batch_create_or_update")
     @ApiOperation(value = "批量创建、更新订单")
     public ResponseEntity<List<OrderDTO>> batchCreateOrUpdate(@ApiParam(value = "创建、更新订单列表", required = true)
-                                                                        @Valid @RequestBody ValidList<OrderCreateOrUpdateDTO> orderCreateOrUpdateDTOS) {
+                                                              @Valid @RequestBody ValidList<OrderCreateOrUpdateDTO> orderCreateOrUpdateDTOS) {
         return Optional.ofNullable(orderService.batchCreateOrUpdate(orderCreateOrUpdateDTOS))
                 .map(result -> new ResponseEntity<>(result, HttpStatus.CREATED))
                 .orElseThrow(() -> new CommonException("error.Order.batchCreateOrUpdate"));

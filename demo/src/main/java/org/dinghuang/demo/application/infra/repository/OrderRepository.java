@@ -1,8 +1,8 @@
 package org.dinghuang.demo.application.infra.repository;
 
-import org.dinghuang.demo.application.infra.dataobject.OrderDO;
 import org.dinghuang.core.annotation.Repository;
 import org.dinghuang.core.mybatis.BaseRepository;
+import org.dinghuang.demo.application.infra.dataobject.OrderDO;
 
 /**
  * 订单Repository

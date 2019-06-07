@@ -2,8 +2,8 @@ package org.dinghuang.gateway;
 
 import org.dinghuang.gateway.config.CorsFilter;
 import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
-import org.springframework.cloud.client.SpringCloudApplication;
 import org.springframework.cloud.netflix.eureka.EnableEurekaClient;
 import org.springframework.cloud.netflix.zuul.EnableZuulProxy;
 import org.springframework.cloud.openfeign.EnableFeignClients;
@@ -17,7 +17,7 @@ import org.springframework.core.Ordered;
 @EnableZuulProxy
 @EnableEurekaClient
 @EnableFeignClients
-@SpringCloudApplication
+@SpringBootApplication
 public class GatewayApplication {
 
     public static void main(String[] args) {

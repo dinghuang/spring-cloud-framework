@@ -1,17 +1,9 @@
 package org.dinghuang.demo.application.dto;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import org.hibernate.validator.constraints.Length;
-
-import javax.validation.constraints.DecimalMax;
-import javax.validation.constraints.NotNull;
-import org.hibernate.validator.constraints.NotBlank;
-
-import java.math.BigDecimal;
-import java.util.Date;
 
 /**
  * 订单CreateDTO

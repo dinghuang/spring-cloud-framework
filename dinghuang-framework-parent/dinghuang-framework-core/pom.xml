@@ -16,7 +16,6 @@
         <java.version>1.8</java.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-        <spring-boot>2.1.0.RELEASE</spring-boot>
         <fastjson>1.2.47</fastjson>
         <commons-collections>3.2.2</commons-collections>
         <commons-lang3>3.8.1</commons-lang3>
@@ -129,7 +128,7 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-actuator</artifactId>
-            <version>${actuator}</version>
+            <version>${spring-boot}</version>
         </dependency>
         <dependency>
             <groupId>org.mapstruct</groupId>
@@ -150,7 +149,6 @@
     </dependencies>
 
     <build>
-        <finalName>dinghuang-framework-core</finalName>
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -162,6 +160,7 @@
                 </configuration>
             </plugin>
         </plugins>
+        <finalName>dinghuang-framework-core</finalName>
     </build>
 
     <distributionManagement>
