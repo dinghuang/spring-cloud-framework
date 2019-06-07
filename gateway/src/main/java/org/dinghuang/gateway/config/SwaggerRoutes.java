@@ -1,10 +1,10 @@
-package com.crland.safe.gateway.config;
+package org.dinghuang.gateway.config;
 
 import java.util.List;
 
 /**
  * @author dinghuang123@gmail.com
- * @since 2019/3/22
+ * @since 2019/06/07
  */
 public class SwaggerRoutes {
 

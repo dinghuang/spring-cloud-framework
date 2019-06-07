@@ -12,6 +12,6 @@ public class CodeGeneratorCode {
 
     public static void main(String[] args) throws Exception {
         CodeGeneratorUtils codeGenerateUtils = new CodeGeneratorUtils();
-        codeGenerateUtils.generate(true, "test_order", "order", "订单", "org.dinghuang.demo.application", "jdbc:mysql://127.0.0.1:3306/sale_customer_dev?useUnicode=true&characterEncoding=utf-8&useSSL=false", "root", "root");
+        codeGenerateUtils.generate(true, "test_order", "order", "订单", "org.dinghuang.demo.application", "jdbc:mysql://127.0.0.1:3306/test?useUnicode=true&characterEncoding=utf-8&useSSL=false", "root", "root");
     }
 }

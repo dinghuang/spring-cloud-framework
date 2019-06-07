@@ -1,27 +1,30 @@
-package com.crland.safe.gateway;
+package org.dinghuang.gateway;
 
-import com.crland.safe.gateway.filter.CorsFilter;
+import org.dinghuang.gateway.config.CorsFilter;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.cloud.client.SpringCloudApplication;
 import org.springframework.cloud.netflix.eureka.EnableEurekaClient;
-import org.springframework.cloud.netflix.feign.EnableFeignClients;
 import org.springframework.cloud.netflix.zuul.EnableZuulProxy;
+import org.springframework.cloud.openfeign.EnableFeignClients;
 import org.springframework.context.annotation.Bean;
 import org.springframework.core.Ordered;
-import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 
+/**
+ * @author dinghuang123@gmail.com
+ * @since 2019/06/07
+ */
 @EnableZuulProxy
 @EnableEurekaClient
 @EnableFeignClients
 @SpringCloudApplication
-@EnableWebMvc
 public class GatewayApplication {
 
     public static void main(String[] args) {
         SpringApplication.run(GatewayApplication.class, args);
     }
 
+    @SuppressWarnings("unchecked")
     @Bean
     public FilterRegistrationBean someFilterRegistration() {
         FilterRegistrationBean registration = new FilterRegistrationBean();

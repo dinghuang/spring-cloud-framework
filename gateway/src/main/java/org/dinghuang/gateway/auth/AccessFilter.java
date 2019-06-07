@@ -1,4 +1,4 @@
-package com.crland.safe.gateway.auth;
+package org.dinghuang.gateway.auth;
 
 import com.netflix.zuul.ZuulFilter;
 import com.netflix.zuul.context.RequestContext;

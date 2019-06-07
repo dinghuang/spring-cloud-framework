@@ -1,4 +1,4 @@
-package com.crland.safe.gateway.config;
+package org.dinghuang.gateway.config;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -15,7 +15,7 @@ import java.util.List;
 
 /**
  * @author dinghuang123@gmail.com
- * @since 2019/3/22
+ * @since 2019/06/07
  */
 @Api(value = "swagger", tags = {"swagger"})
 @RestController
@@ -34,12 +34,12 @@ public class SwaggerController {
             List<String> stringList = new ArrayList<>(1);
             stringList.add(serviceName);
             swaggerRoutes.setNames(stringList);
-            LOGGER.info("add swagger routes{}", serviceName);
+            LOGGER.info("add swagger routes:{}", serviceName);
         } else {
             if (!strings.contains(serviceName)) {
                 strings.add(serviceName);
                 swaggerRoutes.setNames(strings);
-                LOGGER.info("add swagger routes{}", serviceName);
+                LOGGER.info("add swagger routes:{}", serviceName);
             }
         }
     }

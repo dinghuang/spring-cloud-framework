@@ -2,7 +2,7 @@ server:
   port: 8080
 spring:
   application:
-    name: sale-server
+    name: demo-service
   datasource:
     url: jdbc:mysql://localhost/test?useUnicode=true&characterEncoding=utf-8&useSSL=false
     username: root
@@ -86,20 +86,29 @@ mybatis-plus:
   configuration:
     map-underscore-to-camel-case: true
     cache-enabled: false
+     # 这个配置会将执行的sql打印出来，在开发或测试的时候可以用
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
 eureka:
   instance:
-    preferIpAddress: true
-    leaseRenewalIntervalInSeconds: 10
-    leaseExpirationDurationInSeconds: 30
+    status-page-url: http://localhost:8002/${spring.application.name}/swagger-ui.html
+    instance-id: ${spring.cloud.client.ipAddress}:${server.port}
+    prefer-ip-address: true
+    lease-expiration-duration-in-seconds: 15
+    lease-renewal-interval-in-seconds: 5
   client:
+    registry-fetch-interval-seconds: 5
     serviceUrl:
       defaultZone: http://localhost:8000/eureka/
-    registryFetchIntervalSeconds: 10
 dinghuang:
   swagger:
     enabled: true
   exception-intercept:
     enabled: true
-logging:
-  level:
-    com.baomidou.mybatisplus.core: debug
+#熔断器超时时间设置
+hystrix:
+  command:
+    default:
+      execution:
+        isolation:
+          thread:
+            timeoutInMilliseconds: 100000

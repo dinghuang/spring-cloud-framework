@@ -1,4 +1,4 @@
-package com.crland.safe.gateway.config;
+package org.dinghuang.gateway.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -12,7 +12,7 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
 /**
  * @author dinghuang123@gmail.com
- * @since 2019/3/22
+ * @since 2019/06/07
  */
 @Configuration
 @EnableSwagger2

@@ -1,10 +1,14 @@
-package org.dinghuang.gateway;
+package org.dinghuang.gateway.config;
 
 import javax.servlet.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
+/**
+ * @author dinghuang123@gmail.com
+ * @since 2019/06/07
+ */
 public class CorsFilter implements Filter {
 
     @Override
