@@ -35,6 +35,8 @@ public class Swagger2Configuration {
                 .apis(RequestHandlerSelectors.any())
                 .paths(PathSelectors.any())
                 .paths(Predicates.not(PathSelectors.regex("/error.*")))
+                .paths(Predicates.not(PathSelectors.regex("/actuator.*")))
+                .paths(Predicates.not(PathSelectors.regex("/druids.*")))
                 // 对根下所有路径进行监控
                 .paths(PathSelectors.regex("/.*"))
                 .build();

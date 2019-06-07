@@ -38,4 +38,13 @@ public class PageableSearchDTO {
 
     @ApiModelProperty(notes = "自定义查询的json数据")
     private String message;
+
+    public PageableDTO initEmptyPageableDto() {
+        PageableDTO pageableDTO = new PageableDTO<>();
+        pageableDTO.setPageNumber(this.pageNumber);
+        pageableDTO.setPageSize(this.pageSize);
+        pageableDTO.setTotalPage(1L);
+        pageableDTO.setTotalCount(0L);
+        return pageableDTO;
+    }
 }

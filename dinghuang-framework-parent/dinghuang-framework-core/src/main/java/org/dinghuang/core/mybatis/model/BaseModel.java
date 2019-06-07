@@ -5,6 +5,7 @@ import lombok.Data;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.io.Serializable;
 import java.util.Date;
 
 /**
@@ -12,7 +13,7 @@ import java.util.Date;
  * @since 2019/2/27
  */
 @Data
-public abstract class BaseModel {
+public abstract class BaseModel implements Serializable, Cloneable {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(BaseModel.class);
 
@@ -37,5 +38,24 @@ public abstract class BaseModel {
     @Version
     protected Long objectVersionNumber;
 
-}
+    @Override
+    public Object clone() {
+        try {
+            return super.clone();
+        } catch (CloneNotSupportedException e) {
+            LOGGER.error("clone " + this.getClass().getName() + " fail");
+        }
+        return null;
+    }
 
+    public void initEmptyObject() {
+        this.objectVersionNumber = null;
+        this.createdBy = null;
+        this.createdByName = null;
+        this.creationDate = null;
+        this.lastUpdatedBy = null;
+        this.lastUpdatedByName = null;
+        this.lastUpdatedDate = null;
+    }
+
+}

@@ -12,6 +12,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 import java.nio.charset.Charset;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * 处理Long类型超过17位被浏览器自动截断的问题
@@ -53,6 +54,7 @@ public class JsonDataConvertConfiguration implements WebMvcConfigurer {
                 //开启浏览器兼容，可能会导致浏览器中文被编码
 //                SerializerFeature.BrowserCompatible,
                 SerializerFeature.WriteNullListAsEmpty,
+                SerializerFeature.WriteNonStringKeyAsString,
                 SerializerFeature.PrettyFormat,
                 SerializerFeature.WriteDateUseDateFormat,
                 SerializerFeature.WriteNullStringAsEmpty,
@@ -80,13 +82,32 @@ public class JsonDataConvertConfiguration implements WebMvcConfigurer {
     public class ToStringSerializer implements ValueFilter {
 
         @Override
+        @SuppressWarnings("unchecked")
         public Object process(Object object, String name, Object value) {
-            if (value instanceof Long) {
-                if ((Long) value >= MAX_SIZE) {
-                    value = value + "";
+            if (value != null) {
+                if (value instanceof Long) {
+                    if ((Long) value >= MAX_SIZE) {
+                        value = value + "";
+                    }
+                    return value;
+                } else if (value instanceof List) {
+                    return ((List) value).stream().map(k -> {
+                        if (k instanceof Long) {
+                            if ((Long) k >= MAX_SIZE) {
+                                return k + "";
+                            } else {
+                                return k;
+                            }
+                        } else {
+                            return k;
+                        }
+                    }).collect(Collectors.toList());
+                } else {
+                    return value;
                 }
+            } else {
+                return null;
             }
-            return value;
         }
     }
 }
