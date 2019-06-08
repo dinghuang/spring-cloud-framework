@@ -1,6 +1,6 @@
 package org.dinghuang.oauth.config;
 
-import org.dinghuang.oauth.entrypoint.CustomerAuthenticationEntryPoint;
+//import org.dinghuang.oauth.entrypoint.CustomerAuthenticationEntryPoint;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -34,8 +34,10 @@ public class CustomerResourceServerConfig extends ResourceServerConfigurerAdapte
 
     /**
      * 这里设置需要token验证的url
-     * 这些url需要在WebSecurityConfigurerAdapter中排掉
-     * 否则进入WebSecurityConfigurerAdapter,进行的是basic auth或表单认证,而不是token认证
+     * 这些url可以在WebSecurityConfigurerAdapter中排查掉，
+     * 对于相同的url，如果二者都配置了验证
+     * 则优先进入ResourceServerConfigurerAdapter,进行token验证。而不会进行
+     * WebSecurityConfigurerAdapter 的 basic auth或表单认证。
      */
     @Override
     public void configure(HttpSecurity http) throws Exception {
@@ -45,8 +47,8 @@ public class CustomerResourceServerConfig extends ResourceServerConfigurerAdapte
                 //登录失败处理器
                 .failureHandler(appLoginFailureHandler)
                 .and()
-                .exceptionHandling().authenticationEntryPoint(new CustomerAuthenticationEntryPoint())
-                .and()
+//                .exceptionHandling().authenticationEntryPoint(new CustomerAuthenticationEntryPoint())
+//                .and()
                 //安全过滤器
                 .apply(permitAllSecurityConfig)
                 .and()
@@ -61,6 +63,6 @@ public class CustomerResourceServerConfig extends ResourceServerConfigurerAdapte
 
     @Override
     public void configure(ResourceServerSecurityConfigurer resources) {
-        resources.authenticationEntryPoint(new CustomerAuthenticationEntryPoint());
+//        resources.authenticationEntryPoint(new CustomerAuthenticationEntryPoint());
     }
 }

@@ -17,7 +17,7 @@ import java.io.IOException;
 public class CustomerLoginOutSuccessHandler implements LogoutSuccessHandler {
 
     @Override
-    public void onLogoutSuccess(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, Authentication authentication) throws IOException, ServletException {
+    public void onLogoutSuccess(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, Authentication authentication) {
 
     }
 }

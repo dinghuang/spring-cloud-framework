@@ -2,7 +2,6 @@ package org.dinghuang.oauth.config;
 
 import com.google.common.net.HttpHeaders;
 import org.apache.commons.lang.ArrayUtils;
-import org.dinghuang.oauth.entrypoint.CustomerAuthenticationEntryPoint;
 import org.dinghuang.oauth.properties.OAuth2ClientProperties;
 import org.dinghuang.oauth.properties.OAuth2Properties;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,7 +23,6 @@ import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.filter.CorsFilter;
 
-import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -62,12 +60,14 @@ public class CustomerAuthorizationServerConfig extends AuthorizationServerConfig
     /**
      * 授权服务器端点配置程序
      *
-     * @param endpoints endpoints
+     * @param authorizationServerEndpointsConfigurer authorizationServerEndpointsConfigurer
      */
     @Override
-    public void configure(AuthorizationServerEndpointsConfigurer endpoints) {
-        endpoints.tokenStore(tokenStore)
+    public void configure(AuthorizationServerEndpointsConfigurer authorizationServerEndpointsConfigurer) {
+        authorizationServerEndpointsConfigurer.tokenStore(tokenStore)
+                //开启密码授权类型
                 .authenticationManager(authenticationManager)
+                //要使用refresh_token的话，需要额外配置userDetailsService
                 .userDetailsService(userDetailsService);
         //扩展token返回结果
         if (jwtAccessTokenConverter != null && jwtTokenEnhancer != null) {
@@ -77,9 +77,10 @@ public class CustomerAuthorizationServerConfig extends AuthorizationServerConfig
             enhancerList.add(jwtAccessTokenConverter);
             tokenEnhancerChain.setTokenEnhancers(enhancerList);
             //jwt
-            endpoints.tokenEnhancer(tokenEnhancerChain).accessTokenConverter(jwtAccessTokenConverter);
+            authorizationServerEndpointsConfigurer.tokenEnhancer(tokenEnhancerChain).accessTokenConverter(jwtAccessTokenConverter);
         }
-        endpoints.exceptionTranslator(customWebResponseExceptionTranslator);
+        //自定义登录或者鉴权失败时的返回信息
+        authorizationServerEndpointsConfigurer.exceptionTranslator(customWebResponseExceptionTranslator);
     }
 
     /**
@@ -94,11 +95,14 @@ public class CustomerAuthorizationServerConfig extends AuthorizationServerConfig
         if (ArrayUtils.isNotEmpty(oAuth2Properties.getClients())) {
             for (OAuth2ClientProperties config : oAuth2Properties.getClients()) {
                 build.withClient(config.getClientId())
+                        //todo 可以对秘钥进行加密
                         .secret(config.getClientSecret())
                         .accessTokenValiditySeconds(config.getAccessTokenValiditySeconds())
                         .refreshTokenValiditySeconds(60 * 60 * 24 * 15)
                         //OAuth2支持的验证模式 密码模式、授权码模式、token刷新
                         .authorizedGrantTypes("refresh_token", "password", "authorization_code")
+                        //设置重定向地址
+                        .redirectUris("http://localhost:9090/login")
                         .scopes("all");
             }
         }
@@ -106,7 +110,7 @@ public class CustomerAuthorizationServerConfig extends AuthorizationServerConfig
 
     @Override
     public void configure(AuthorizationServerSecurityConfigurer authorizationServerSecurityConfigurer) {
-        //todo 配置oauth2服务跨域
+        //配置oauth2服务跨域
         CorsConfigurationSource source = request -> {
             CorsConfiguration corsConfiguration = new CorsConfiguration();
             corsConfiguration.addAllowedHeader("*");
@@ -121,6 +125,6 @@ public class CustomerAuthorizationServerConfig extends AuthorizationServerConfig
                 .checkTokenAccess("permitAll()")
                 .allowFormAuthenticationForClients()
                 .addTokenEndpointAuthenticationFilter(new CorsFilter(source));
-        authorizationServerSecurityConfigurer.authenticationEntryPoint(new CustomerAuthenticationEntryPoint());
+//        authorizationServerSecurityConfigurer.authenticationEntryPoint(new CustomerAuthenticationEntryPoint());
     }
 }

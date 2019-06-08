@@ -3,6 +3,10 @@ server:
   session:
     timeout: 60
 spring:
+  thymeleaf:
+    mode: HTML5
+    encoding: UTF-8
+    cache: false
   application:
     name: oauth-service
   redis:

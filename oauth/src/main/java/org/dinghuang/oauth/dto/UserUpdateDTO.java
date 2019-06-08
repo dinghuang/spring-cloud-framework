@@ -1,16 +1,11 @@
 package org.dinghuang.oauth.dto;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import org.hibernate.validator.constraints.Length;
-import java.math.BigDecimal;
-import java.util.Date;
 
-import javax.validation.constraints.DecimalMax;
 import javax.validation.constraints.NotNull;
-import org.hibernate.validator.constraints.NotBlank;
 
 /**
  * 用户信息UpdateDTO

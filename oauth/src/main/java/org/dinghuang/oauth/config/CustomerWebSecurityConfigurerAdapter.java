@@ -3,9 +3,13 @@ package org.dinghuang.oauth.config;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import org.dinghuang.oauth.handler.CustomerExpiredSessionHandler;
 import org.dinghuang.oauth.handler.CustomerLoginOutSuccessHandler;
+import org.dinghuang.oauth.infra.dataobject.RoleDO;
 import org.dinghuang.oauth.infra.dataobject.UserDO;
 import org.dinghuang.oauth.infra.dataobject.enums.UserEnum;
+import org.dinghuang.oauth.infra.repository.RoleRepository;
 import org.dinghuang.oauth.infra.repository.UserRepository;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.web.servlet.ServletListenerRegistrationBean;
 import org.springframework.context.annotation.Bean;
@@ -22,6 +26,7 @@ import org.springframework.security.core.session.SessionRegistryImpl;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.logout.LogoutSuccessHandler;
 import org.springframework.security.web.session.HttpSessionEventPublisher;
@@ -38,12 +43,18 @@ import org.springframework.util.DigestUtils;
 @EnableWebSecurity
 public class CustomerWebSecurityConfigurerAdapter extends WebSecurityConfigurerAdapter {
 
+    private static final Logger LOGGER = LoggerFactory.getLogger(CustomerWebSecurityConfigurerAdapter.class);
+
     @Autowired
     private UserRepository userRepository;
+    @Autowired
+    private RoleRepository roleRepository;
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http.formLogin().loginPage( "/login" ).failureUrl( "/login-error" )
+        http.formLogin().loginPage("/login").failureUrl("/login-error")
+                .and()
+                .exceptionHandling().accessDeniedPage("/401")
                 .and()
                 .authorizeRequests().antMatchers("/session/invalid")
                 .permitAll()
@@ -58,6 +69,7 @@ public class CustomerWebSecurityConfigurerAdapter extends WebSecurityConfigurerA
                 .and()
                 .and()
                 .logout()
+                .logoutSuccessUrl("/")
                 .permitAll().logoutSuccessHandler(logoutSuccessHandler())
                 .and()
                 .csrf().disable();
@@ -67,20 +79,22 @@ public class CustomerWebSecurityConfigurerAdapter extends WebSecurityConfigurerA
     public void globalUserDetails(AuthenticationManagerBuilder auth) throws Exception {
         //配置用户来源于数据库
         auth.userDetailsService(userDetailsService())
-                .passwordEncoder( new PasswordEncoder() {
-            //对密码进行加密
-            @Override
-            public String encode(CharSequence charSequence) {
-                System.out.println(charSequence.toString());
-                return DigestUtils.md5DigestAsHex(charSequence.toString().getBytes());
-            }
-            //对密码进行判断匹配
-            @Override
-            public boolean matches(CharSequence charSequence, String s) {
-                String encode = DigestUtils.md5DigestAsHex(charSequence.toString().getBytes());
-                return s.equals( encode );
-            }
-        } );
+                .passwordEncoder(new BCryptPasswordEncoder() {
+                    //对密码进行加密
+                    @Override
+                    public String encode(CharSequence charSequence) {
+                        LOGGER.info(charSequence.toString());
+                        return DigestUtils.md5DigestAsHex(charSequence.toString().getBytes());
+                    }
+
+                    //对密码进行判断匹配
+                    @Override
+                    public boolean matches(CharSequence charSequence, String s) {
+                        //todo 密码策略
+                        String encode = DigestUtils.md5DigestAsHex(charSequence.toString().getBytes());
+                        return s.equals(encode);
+                    }
+                });
     }
 
     @Bean
@@ -115,10 +129,8 @@ public class CustomerWebSecurityConfigurerAdapter extends WebSecurityConfigurerA
             UserDO userDO = userRepository.selectOne(userDOQueryWrapper);
             if (userDO != null) {
                 // 创建spring security安全用户
-                User user = new User(userDO.getName(), userDO.getPassword(),
-                        //todo 角色
-                        AuthorityUtils.createAuthorityList(userDO.getRole()));
-                return user;
+                String[] roles = roleRepository.queryRolesByUserId(userDO.getId()).stream().map(RoleDO::getName).toArray(String[]::new);
+                return new User(userDO.getName(), userDO.getPassword(), AuthorityUtils.createAuthorityList(roles));
             } else {
                 throw new UsernameNotFoundException("用户[" + name + "]不存在");
             }

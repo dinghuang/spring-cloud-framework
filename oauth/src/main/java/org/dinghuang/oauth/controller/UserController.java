@@ -1,17 +1,17 @@
 package org.dinghuang.oauth.controller;
 
-import org.dinghuang.oauth.dto.UserCreateDTO;
-import org.dinghuang.oauth.dto.UserDTO;
-import org.dinghuang.oauth.dto.UserUpdateDTO;
-import org.dinghuang.oauth.dto.UserCreateOrUpdateDTO;
-import org.dinghuang.oauth.service.UserService;
-import org.dinghuang.core.dto.ValidList;
-import org.dinghuang.core.dto.PageableDTO;
-import org.dinghuang.core.dto.PageableSearchDTO;
-import org.dinghuang.core.exception.CommonException;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
+import org.dinghuang.core.dto.PageableDTO;
+import org.dinghuang.core.dto.PageableSearchDTO;
+import org.dinghuang.core.dto.ValidList;
+import org.dinghuang.core.exception.CommonException;
+import org.dinghuang.oauth.dto.UserCreateDTO;
+import org.dinghuang.oauth.dto.UserCreateOrUpdateDTO;
+import org.dinghuang.oauth.dto.UserDTO;
+import org.dinghuang.oauth.dto.UserUpdateDTO;
+import org.dinghuang.oauth.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -39,7 +39,7 @@ public class UserController {
     @PostMapping
     @ApiOperation(value = "创建用户信息")
     public ResponseEntity<UserDTO> create(@ApiParam(value = "创建用户信息", required = true)
-                                                   @Valid @RequestBody UserCreateDTO userCreateDTO) {
+                                          @Valid @RequestBody UserCreateDTO userCreateDTO) {
         return Optional.ofNullable(userService.create(userCreateDTO))
                 .map(result -> new ResponseEntity<>(result, HttpStatus.CREATED))
                 .orElseThrow(() -> new CommonException("error.User.create"));
@@ -48,7 +48,7 @@ public class UserController {
     @PutMapping
     @ApiOperation(value = "更新用户信息")
     public ResponseEntity<UserDTO> update(@ApiParam(value = "更新用户信息", required = true)
-                                                   @Valid @RequestBody UserUpdateDTO userUpdateDTO) {
+                                          @Valid @RequestBody UserUpdateDTO userUpdateDTO) {
         return Optional.ofNullable(userService.update(userUpdateDTO))
                 .map(result -> new ResponseEntity<>(result, HttpStatus.CREATED))
                 .orElseThrow(() -> new CommonException("error.User.update"));
@@ -64,7 +64,7 @@ public class UserController {
     @GetMapping("/{id}")
     @ApiOperation(value = "根据id查询用户信息")
     public ResponseEntity<UserDTO> queryById(@ApiParam(value = "id", required = true)
-                                                      @PathVariable(name = "id") Long id) {
+                                             @PathVariable(name = "id") Long id) {
         return Optional.ofNullable(userService.queryById(id))
                 .map(result -> new ResponseEntity<>(result, HttpStatus.OK))
                 .orElseThrow(() -> new CommonException("error.User.queryById"));
@@ -81,7 +81,7 @@ public class UserController {
     @PostMapping(value = "/batch_create_or_update")
     @ApiOperation(value = "批量创建、更新用户信息")
     public ResponseEntity<List<UserDTO>> batchCreateOrUpdate(@ApiParam(value = "创建、更新用户信息列表", required = true)
-                                                                        @Valid @RequestBody ValidList<UserCreateOrUpdateDTO> userCreateOrUpdateDTOS) {
+                                                             @Valid @RequestBody ValidList<UserCreateOrUpdateDTO> userCreateOrUpdateDTOS) {
         return Optional.ofNullable(userService.batchCreateOrUpdate(userCreateOrUpdateDTOS))
                 .map(result -> new ResponseEntity<>(result, HttpStatus.CREATED))
                 .orElseThrow(() -> new CommonException("error.User.batchCreateOrUpdate"));

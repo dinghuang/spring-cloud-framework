@@ -1,14 +1,16 @@
 package org.dinghuang.oauth.mapper;
 
-import org.dinghuang.oauth.infra.dataobject.UserDO;
-import org.dinghuang.oauth.dto.UserDTO;
-import org.dinghuang.oauth.dto.UserCreateDTO;
-import org.dinghuang.oauth.dto.UserUpdateDTO;
-import org.dinghuang.oauth.dto.UserCreateOrUpdateDTO;
-import org.mapstruct.Mapper;
-import org.mapstruct.factory.Mappers;
 import org.dinghuang.core.dto.PageableDTO;
 import org.dinghuang.core.mybatis.model.Pageable;
+import org.dinghuang.oauth.dto.UserCreateDTO;
+import org.dinghuang.oauth.dto.UserCreateOrUpdateDTO;
+import org.dinghuang.oauth.dto.UserDTO;
+import org.dinghuang.oauth.dto.UserUpdateDTO;
+import org.dinghuang.oauth.infra.dataobject.UserDO;
+import org.dinghuang.oauth.model.User;
+import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
+import org.mapstruct.factory.Mappers;
 
 import java.util.List;
 
@@ -70,4 +72,7 @@ public interface UserMapper {
      * @return UserDTO
      */
     PageableDTO<UserDTO> pageDoToDto(Pageable<UserDO> userDOPageable);
+
+    @Mapping(source = "account",target = "username")
+    User doToUser(UserDO userDO);
 }
