@@ -1,5 +1,6 @@
 package org.dinghuang.oauth.handler;
 
+import org.dinghuang.core.exception.CommonValidateException;
 import org.dinghuang.oauth.infra.repository.RoleRepository;
 import org.dinghuang.oauth.infra.repository.UserRepository;
 import org.dinghuang.oauth.mapper.RoleMapper;
@@ -32,6 +33,8 @@ public class CustomerUserDetailsServiceImpl implements UserDetailsService {
         if (null != user) {
             List<Role> roles = RoleMapper.INSTANCE.doToRoles(roleRepository.queryRolesByUserId(user.getId()));
             user.setAuthorities(roles);
+        }else{
+            throw new CommonValidateException("用户名不存在");
         }
         return user;
     }

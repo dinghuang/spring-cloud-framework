@@ -27,10 +27,8 @@ import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.logout.LogoutSuccessHandler;
 import org.springframework.security.web.session.HttpSessionEventPublisher;
-import org.springframework.util.DigestUtils;
 
 /**
  * Web安全配置程序
@@ -52,7 +50,7 @@ public class CustomerWebSecurityConfigurerAdapter extends WebSecurityConfigurerA
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http.formLogin().loginPage("/login").failureUrl("/login-error")
+        http.httpBasic().and().formLogin().loginPage("/login").failureUrl("/login-error")
                 .and()
                 .exceptionHandling().accessDeniedPage("/401")
                 .and()
@@ -79,22 +77,8 @@ public class CustomerWebSecurityConfigurerAdapter extends WebSecurityConfigurerA
     public void globalUserDetails(AuthenticationManagerBuilder auth) throws Exception {
         //配置用户来源于数据库
         auth.userDetailsService(userDetailsService())
-                .passwordEncoder(new BCryptPasswordEncoder() {
-                    //对密码进行加密
-                    @Override
-                    public String encode(CharSequence charSequence) {
-                        LOGGER.info(charSequence.toString());
-                        return DigestUtils.md5DigestAsHex(charSequence.toString().getBytes());
-                    }
-
-                    //对密码进行判断匹配
-                    @Override
-                    public boolean matches(CharSequence charSequence, String s) {
-                        //todo 密码策略
-                        String encode = DigestUtils.md5DigestAsHex(charSequence.toString().getBytes());
-                        return s.equals(encode);
-                    }
-                });
+                //todo 自定义密码策略
+                .passwordEncoder(new BCryptPasswordEncoder());
     }
 
     @Bean
@@ -113,7 +97,7 @@ public class CustomerWebSecurityConfigurerAdapter extends WebSecurityConfigurerA
         return new CustomerLoginOutSuccessHandler();
     }
 
-    @Bean
+    @Bean(name = "authenticationManagerBean")
     @Override
     public AuthenticationManager authenticationManagerBean() throws Exception {
         return super.authenticationManagerBean();

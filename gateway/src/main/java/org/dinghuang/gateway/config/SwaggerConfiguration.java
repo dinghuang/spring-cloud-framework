@@ -37,4 +37,5 @@ public class SwaggerConfiguration {
         return new UiConfiguration(null, "none", "alpha", "schema",
                 UiConfiguration.Constants.DEFAULT_SUBMIT_METHODS, false, true, 60000L);
     }
+
 }

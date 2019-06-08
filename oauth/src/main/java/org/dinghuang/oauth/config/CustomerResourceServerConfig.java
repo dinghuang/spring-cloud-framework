@@ -1,6 +1,8 @@
 package org.dinghuang.oauth.config;
 
 //import org.dinghuang.oauth.entrypoint.CustomerAuthenticationEntryPoint;
+
+import org.dinghuang.oauth.entrypoint.CustomerAuthenticationEntryPoint;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -20,17 +22,13 @@ import org.springframework.security.web.authentication.AuthenticationSuccessHand
 @EnableResourceServer
 public class CustomerResourceServerConfig extends ResourceServerConfigurerAdapter {
 
-    /**
-     * 自定义登录成功处理器
-     */
-    @Autowired
-    private AuthenticationSuccessHandler authenticationSuccessHandler;
-
-    @Autowired
-    private AuthenticationFailureHandler appLoginFailureHandler;
 
     @Autowired
     private PermitAllSecurityConfig permitAllSecurityConfig;
+    @Autowired
+    private AuthenticationSuccessHandler authenticationSuccessHandler;
+    @Autowired
+    private AuthenticationFailureHandler authenticationFailureHandler;
 
     /**
      * 这里设置需要token验证的url
@@ -41,28 +39,38 @@ public class CustomerResourceServerConfig extends ResourceServerConfigurerAdapte
      */
     @Override
     public void configure(HttpSecurity http) throws Exception {
-        http.formLogin()
-                //登录成功处理器
+        //todo esb的请求排除掉
+        http.formLogin() //登录成功处理器
                 .successHandler(authenticationSuccessHandler)
                 //登录失败处理器
-                .failureHandler(appLoginFailureHandler)
+                .failureHandler(authenticationFailureHandler)
                 .and()
-//                .exceptionHandling().authenticationEntryPoint(new CustomerAuthenticationEntryPoint())
-//                .and()
                 //安全过滤器
                 .apply(permitAllSecurityConfig)
                 .and()
+                .exceptionHandling().authenticationEntryPoint(new CustomerAuthenticationEntryPoint())
+                .accessDeniedPage("/401")
+                .and()
+                .requestMatchers()
+                .antMatchers("/api/**").and()
                 .authorizeRequests()
-                .antMatchers("/user").hasRole("USER")
-                .antMatchers("/forbidden").hasRole("ADMIN")
-                .antMatchers("/permitAll").permitAll()
+                .antMatchers("/401").permitAll()
+                .antMatchers("/login").permitAll()
+                .antMatchers("/webjars/**","/swagger-resources/**","/swagger-ui.html/**","/null/swagger-resources/configuration/ui","/v2/api-docs","/favicon.ico").authenticated()
+                .antMatchers().permitAll()
+                .antMatchers("/oauth/**").permitAll()
                 .anyRequest().authenticated()
                 .and()
+//                .and()
+//                .requestMatchers().antMatchers("/oauth/**")
+//                .and()
+//                .authorizeRequests()
+//                .antMatchers("/oauth/**").authenticated()
                 .csrf().disable();
     }
 
     @Override
     public void configure(ResourceServerSecurityConfigurer resources) {
-//        resources.authenticationEntryPoint(new CustomerAuthenticationEntryPoint());
+        resources.authenticationEntryPoint(new CustomerAuthenticationEntryPoint());
     }
 }

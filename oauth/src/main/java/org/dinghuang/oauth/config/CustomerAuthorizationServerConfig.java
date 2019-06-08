@@ -1,13 +1,18 @@
 package org.dinghuang.oauth.config;
 
+import com.baomidou.mybatisplus.core.toolkit.ArrayUtils;
 import com.google.common.net.HttpHeaders;
-import org.apache.commons.lang.ArrayUtils;
+import org.dinghuang.oauth.entrypoint.CustomerAuthenticationEntryPoint;
 import org.dinghuang.oauth.properties.OAuth2ClientProperties;
 import org.dinghuang.oauth.properties.OAuth2Properties;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.oauth2.config.annotation.builders.InMemoryClientDetailsServiceBuilder;
 import org.springframework.security.oauth2.config.annotation.configurers.ClientDetailsServiceConfigurer;
 import org.springframework.security.oauth2.config.annotation.web.configuration.AuthorizationServerConfigurerAdapter;
@@ -36,10 +41,13 @@ import java.util.List;
 @EnableAuthorizationServer
 public class CustomerAuthorizationServerConfig extends AuthorizationServerConfigurerAdapter {
 
+    private static final Logger LOGGER = LoggerFactory.getLogger(CustomerAuthorizationServerConfig.class);
+
     @Autowired
     private OAuth2Properties oAuth2Properties;
 
     @Autowired
+    @Qualifier("authenticationManagerBean")
     private AuthenticationManager authenticationManager;
 
     @Autowired
@@ -95,14 +103,12 @@ public class CustomerAuthorizationServerConfig extends AuthorizationServerConfig
         if (ArrayUtils.isNotEmpty(oAuth2Properties.getClients())) {
             for (OAuth2ClientProperties config : oAuth2Properties.getClients()) {
                 build.withClient(config.getClientId())
-                        //todo 可以对秘钥进行加密
-                        .secret(config.getClientSecret())
+                        .secret("{bcrypt}" + new BCryptPasswordEncoder().encode(config.getClientSecret()))
+                        .resourceIds(config.getClientId())
                         .accessTokenValiditySeconds(config.getAccessTokenValiditySeconds())
                         .refreshTokenValiditySeconds(60 * 60 * 24 * 15)
                         //OAuth2支持的验证模式 密码模式、授权码模式、token刷新
                         .authorizedGrantTypes("refresh_token", "password", "authorization_code")
-                        //设置重定向地址
-                        .redirectUris("http://localhost:9090/login")
                         .scopes("all");
             }
         }
@@ -125,6 +131,7 @@ public class CustomerAuthorizationServerConfig extends AuthorizationServerConfig
                 .checkTokenAccess("permitAll()")
                 .allowFormAuthenticationForClients()
                 .addTokenEndpointAuthenticationFilter(new CorsFilter(source));
-//        authorizationServerSecurityConfigurer.authenticationEntryPoint(new CustomerAuthenticationEntryPoint());
+        authorizationServerSecurityConfigurer.authenticationEntryPoint(new CustomerAuthenticationEntryPoint())
+                .checkTokenAccess("isAuthenticated()");
     }
 }

@@ -15,6 +15,7 @@ import org.dinghuang.oauth.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -71,6 +72,7 @@ public class UserController {
     }
 
     @GetMapping(value = "/query_by_page")
+    @PreAuthorize("hasRole('ROLE_USER')")
     @ApiOperation(value = "分页查询用户信息")
     public ResponseEntity<PageableDTO<UserDTO>> queryByPage(@Valid PageableSearchDTO pageableSearchDTO) {
         return Optional.ofNullable(userService.queryByPage(pageableSearchDTO))

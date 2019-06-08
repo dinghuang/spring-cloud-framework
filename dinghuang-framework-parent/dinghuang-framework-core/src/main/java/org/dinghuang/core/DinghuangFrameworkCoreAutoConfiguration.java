@@ -7,6 +7,7 @@ import org.dinghuang.core.controller.DruidStatController;
 import org.dinghuang.core.mybatis.config.CustomMetaObjectConfiguration;
 import org.dinghuang.core.mybatis.config.MybatisPlusConfiguration;
 import org.dinghuang.core.mybatis.config.SqlInjectorConfiguration;
+import org.dinghuang.core.properties.OAuth2Properties;
 import org.dinghuang.core.utils.SpringContextUtils;
 import org.springframework.boot.autoconfigure.ImportAutoConfiguration;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnWebApplication;
@@ -27,6 +28,7 @@ import org.springframework.context.annotation.Configuration;
         MybatisPlusConfiguration.class,
         SqlInjectorConfiguration.class,
         JsonDataConvertConfiguration.class,
+        OAuth2Properties.class,
         DruidStatController.class,
         CustomMetaObjectConfiguration.class})
 public class DinghuangFrameworkCoreAutoConfiguration {

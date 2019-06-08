@@ -1,12 +1,12 @@
 package org.dinghuang.oauth.handler;
 
 import com.alibaba.fastjson.JSON;
-import org.apache.commons.codec.binary.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.security.crypto.codec.Base64;
 import org.springframework.security.oauth2.common.OAuth2AccessToken;
 import org.springframework.security.oauth2.common.exceptions.UnapprovedClientAuthenticationException;
@@ -53,14 +53,16 @@ public class CustomerLoginInSuccessHandler extends SavedRequestAwareAuthenticati
         String clientSecret = tokens[1];
 
         ClientDetails clientDetails = clientDetailsService.loadClientByClientId(clientId);
-
         if (clientDetails == null) {
             throw new UnapprovedClientAuthenticationException("clientId 对应的配置信息不存在" + clientId);
-        } else if (!StringUtils.equals(clientDetails.getClientSecret(), clientSecret)) {
-            throw new UnapprovedClientAuthenticationException("clientSecret 不匹配" + clientId);
+        } else {
+            String encodeClient = clientDetails.getClientSecret().substring(8,clientDetails.getClientSecret().length());
+            if (!BCrypt.checkpw(clientSecret, encodeClient)) {
+                throw new UnapprovedClientAuthenticationException("clientSecret 不匹配" + clientId);
+            }
         }
 
-        TokenRequest tokenRequest = new TokenRequest(new HashMap<>(), clientId, clientDetails.getScope(), "custom");
+        TokenRequest tokenRequest = new TokenRequest(new HashMap<>(0), clientId, clientDetails.getScope(), "custom");
 
         OAuth2Request oAuth2Request = tokenRequest.createOAuth2Request(clientDetails);
 

@@ -4,7 +4,7 @@ server:
     timeout: 60
 spring:
   thymeleaf:
-    mode: HTML5
+    mode: HTML
     encoding: UTF-8
     cache: false
   application:
@@ -94,19 +94,20 @@ dinghuang:
     enabled: true
   security:
     oauth2:
+      enabled: true
       storeType: jwt
       jwtSigningKey: dinghuang
       clients[0]:
-        clientId: dinghuang
-        clientSecret: dinghuang
-      clients[1]:
-        clientId: dinghuang1
-        clientSecret: dinghuang1
+        clientId: client1
+        clientSecret: client1
+#      clients[1]:
+#        clientId: client2
+#        clientSecret: client2
 security:
   oauth2:
     client:
-      client-id: dinghuang
-      client-secret: dinghuang
+      clientId: 233668646673605
+      clientSecret: 33b17e044ee6a4fa383f46ec6e28ea1d
 #熔断器超时时间设置
 hystrix:
   command:
