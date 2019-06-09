@@ -8,16 +8,22 @@ server:
     accept-count: 1000
     max-threads: 1000
     max-connections: 2000
-#security:
-#  oauth2:
-#    client:
-#      access-token-uri: http://localhost:9090/oauth/token
-#      user-authorization-uri: http://localhost:9090/oauth/authorize
-#      client-id: client1
-#      client-secret: client1
-#    resource:
-#      user-info-uri: http://localhost:9090/user
-#      prefer-token-info: false
+dinghuang:
+  swagger:
+    enabled: true
+  exception-intercept:
+    enabled: true
+  security:
+    oauth2:
+      enabled: true
+      clientEnabled: true
+      oauthPath:  http://localhost:9090/oauth
+      jwtSigningKey:  dinghuang
+      clients[0]:
+        clientId: client1
+        clientSecret: client1
+        redirectUrl:  http://localhost:9090/index
+        scopes: all
 ribbon:
   eureka:
     enable: true

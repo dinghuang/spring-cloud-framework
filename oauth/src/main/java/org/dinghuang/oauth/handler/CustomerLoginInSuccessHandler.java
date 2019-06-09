@@ -37,9 +37,7 @@ public class CustomerLoginInSuccessHandler extends SavedRequestAwareAuthenticati
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException {
 
-        //todo 对header做操作
-//        String header = request.getHeader("Authorization");
-        String header = "Basic Y2xpZW50MTpjbGllbnQx";
+        String header = request.getHeader("Authorization");
         if (header == null || !header.startsWith("Basic ")) {
             throw new UnapprovedClientAuthenticationException("请求头中无client信息");
         }

@@ -18,7 +18,7 @@ import java.util.*;
  * @author dinghuang123@gmail.com
  * @since 2019/6/9
  */
-public class MyRedisTokenStore implements TokenStore {
+public class CustomerRedisTokenStore implements TokenStore {
     private static final String ACCESS = "access:";
     private static final String AUTH_TO_ACCESS = "auth_to_access:";
     private static final String AUTH = "auth:";
@@ -33,7 +33,7 @@ public class MyRedisTokenStore implements TokenStore {
     private RedisTokenStoreSerializationStrategy serializationStrategy = new JdkSerializationStrategy();
     private String prefix = "";
 
-    public MyRedisTokenStore(RedisConnectionFactory connectionFactory) {
+    public CustomerRedisTokenStore(RedisConnectionFactory connectionFactory) {
         this.connectionFactory = connectionFactory;
     }
 

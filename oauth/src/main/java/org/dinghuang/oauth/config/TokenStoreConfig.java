@@ -33,7 +33,7 @@ public class TokenStoreConfig {
     @Bean
     @ConditionalOnProperty(prefix = "dinghuang.security.oauth2", name = "storeType", havingValue = "redis")
     public TokenStore redisTokenStore() {
-        return new MyRedisTokenStore(redisConnectionFactory);
+        return new CustomerRedisTokenStore(redisConnectionFactory);
     }
 
     /**

@@ -1,6 +1,10 @@
 package org.dinghuang.core.utils;
 
-import org.dinghuang.core.model.User;
+import com.alibaba.fastjson.JSON;
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.Jwts;
+import org.apache.commons.lang.StringUtils;
+import org.dinghuang.core.model.UserDO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.context.request.RequestContextHolder;
@@ -8,7 +12,6 @@ import org.springframework.web.context.request.ServletRequestAttributes;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.UnsupportedEncodingException;
-import java.net.URLDecoder;
 
 /**
  * @author dinghuang123@gmail.com
@@ -18,22 +21,28 @@ public class UserUtils {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(UserUtils.class);
 
-    public static User getUser() {
-        User user = new User();
+    public static UserDO getUser() {
+        UserDO user = new UserDO();
         if (RequestContextHolder.getRequestAttributes() == null) {
             user.setAccount("admin");
             user.setName("管理员");
             return user;
         }
         HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
-        String account = request.getHeader("account");
-        String name = request.getHeader("name");
-        user.setAccount(account == null ? "admin" : account);
+        String header = request.getHeader("Authorization");
+        String token = StringUtils.substringAfter(header, "Bearer ");
+        Claims claims = null;
         try {
-            user.setName(name == null ? "管理员" : URLDecoder.decode(name, "UTF-8"));
+            claims = Jwts.parser().setSigningKey("dinghuang".getBytes("UTF-8")).parseClaimsJws(token).getBody();
         } catch (UnsupportedEncodingException e) {
-            LOGGER.warn(e.getMessage());
+            LOGGER.error(e.getMessage());
         }
-        return user;
+        if (claims == null) {
+            user.setAccount("admin");
+            user.setName("管理员");
+            return user;
+        } else {
+            return JSON.parseObject(JSON.toJSONString(claims.get("user")), UserDO.class);
+        }
     }
 }

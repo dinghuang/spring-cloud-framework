@@ -35,6 +35,11 @@
             <artifactId>spring-cloud-starter-eureka</artifactId>
             <version>${spring-cloud-starter}</version>
         </dependency>
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-security</artifactId>
+            <version>${spring-boot}</version>
+        </dependency>
     </dependencies>
 
     <build>
@@ -47,7 +52,7 @@
                     <source>1.8</source>
                     <target>1.8</target>
                     <annotationProcessorPaths>
-                         <!--这个配置是因为lombok跟mapstruct一起用的时候maven对注解的解析器选择有点问题-->
+                        <!--这个配置是因为lombok跟mapstruct一起用的时候maven对注解的解析器选择有点问题-->
                         <path>
                             <groupId>org.mapstruct</groupId>
                             <artifactId>mapstruct-processor</artifactId>

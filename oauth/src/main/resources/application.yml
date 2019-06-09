@@ -94,10 +94,11 @@ dinghuang:
     enabled: true
   security:
     oauth2:
+      clientEnabled: false
       enabled: true
       oauthPath: http://localhost:9090/oauth
       #jwt redis
-      storeType: redis
+      storeType: jwt
       jwtSigningKey: dinghuang
       clients[0]:
         clientId: client1
@@ -106,17 +107,6 @@ dinghuang:
         scopes: all
         accessTokenValiditySeconds: 6000
         refreshTokenValiditySeconds: 6000
-#security:
-#  oauth2:
-#    client:
-#      clientId: 233668646673605
-#      clientSecret: 33b17e044ee6a4fa383f46ec6e28ea1d
-security:
-  oauth2:
-    resource:
-      id: demo-service
-      user-info-uri: http://localhost:8002/oauth-service/user
-      prefer-token-info: false
 #熔断器超时时间设置
 hystrix:
   command:

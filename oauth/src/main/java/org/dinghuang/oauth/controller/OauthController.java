@@ -1,13 +1,15 @@
 package org.dinghuang.oauth.controller;
 
-import org.dinghuang.oauth.properties.OAuth2Properties;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.oauth2.provider.token.ResourceServerTokenServices;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.security.Principal;
 
@@ -20,8 +22,7 @@ public class OauthController {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(OauthController.class);
 
-    @Autowired
-    private OAuth2Properties oAuth2Properties;
+    private ResourceServerTokenServices tokenServices;
 
 //    @GetMapping("/user")
 //    public Object getUser(Authentication authentication, HttpServletRequest request) throws UnsupportedEncodingException {
@@ -36,6 +37,17 @@ public class OauthController {
 //        LOGGER.info("【SecurityOauth2Application】 getUser {}", userDO.toString());
 //        return authentication;
 //    }
+
+    @GetMapping("/validator_token")
+    public ResponseEntity<Boolean> validatorToken(@RequestParam(name = "token") String token) {
+        Boolean condition = true;
+        try {
+            tokenServices.readAccessToken(token);
+        } catch (Exception e) {
+            condition = false;
+        }
+        return new ResponseEntity<>(condition, HttpStatus.OK);
+    }
 
     @RequestMapping("/user")
     public Principal user(Principal user) {
@@ -68,23 +80,4 @@ public class OauthController {
         return "401";
     }
 
-    @GetMapping("/user/common")
-    public String common() {
-        return "user/common";
-    }
-
-    @GetMapping("/user/admin")
-    public String admin() {
-        return "user/admin";
-    }
-
-    @GetMapping("/forbidden")
-    public String getForbidden() {
-        return "forbidden";
-    }
-
-    @GetMapping("/permitAll")
-    public String getPermitAll() {
-        return "permitAll";
-    }
 }

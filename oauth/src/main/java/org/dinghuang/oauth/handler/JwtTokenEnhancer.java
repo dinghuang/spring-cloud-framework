@@ -13,6 +13,7 @@ import org.springframework.security.oauth2.provider.token.TokenEnhancer;
 import org.springframework.stereotype.Component;
 
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
@@ -26,9 +27,11 @@ public class JwtTokenEnhancer implements TokenEnhancer {
     private UserRepository userRepository;
 
     @Override
+    @SuppressWarnings("unchecked")
     public OAuth2AccessToken enhance(OAuth2AccessToken accessToken, OAuth2Authentication authentication) {
         //todo 可以存放用户信息在token中
-        String userName = authentication.getUserAuthentication().getName();
+        LinkedHashMap<String, String> linkedHashMap = (LinkedHashMap<String, String>) authentication.getUserAuthentication().getDetails();
+        String userName = linkedHashMap.get("username");
         User user = (User) authentication.getUserAuthentication().getPrincipal();
         QueryWrapper<UserDO> userDOQueryWrapper = new QueryWrapper<>();
         userDOQueryWrapper.eq(true, UserEnum.ACCOUNT.value(), userName);

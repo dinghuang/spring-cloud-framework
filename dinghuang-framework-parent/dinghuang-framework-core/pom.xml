@@ -33,6 +33,7 @@
         <actuator>2.1.5.RELEASE</actuator>
         <hystrix>1.4.7.RELEASE</hystrix>
         <freemarker>2.3.28</freemarker>
+        <jjwt>0.9.1</jjwt>
     </properties>
 
     <dependencies>
@@ -145,6 +146,21 @@
             <groupId>org.springframework.cloud</groupId>
             <artifactId>spring-cloud-starter-hystrix</artifactId>
             <version>${hystrix}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.security.oauth</groupId>
+            <artifactId>spring-security-oauth2</artifactId>
+            <version>${spring-boot}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.security</groupId>
+            <artifactId>spring-security-jwt</artifactId>
+            <version>1.0.10.RELEASE</version>
+        </dependency>
+        <dependency>
+            <groupId>io.jsonwebtoken</groupId>
+            <artifactId>jjwt</artifactId>
+            <version>${jjwt}</version>
         </dependency>
     </dependencies>
 
