@@ -16,7 +16,6 @@ import springfox.documentation.service.*;
 import springfox.documentation.spi.DocumentationType;
 import springfox.documentation.spi.service.contexts.SecurityContext;
 import springfox.documentation.spring.web.plugins.Docket;
-import springfox.documentation.swagger.web.SecurityConfiguration;
 import springfox.documentation.swagger.web.UiConfiguration;
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
@@ -77,8 +76,8 @@ public class Swagger2Configuration {
     List<GrantType> grantTypes() {
         List<GrantType> grantTypes = new ArrayList<>();
         for (OAuth2ClientProperties config : oAuth2Properties.getClients()) {
-            TokenRequestEndpoint tokenRequestEndpoint = new TokenRequestEndpoint("http://localhost:9090/oauth/authorize", config.getClientId(), config.getClientSecret());
-            TokenEndpoint tokenEndpoint = new TokenEndpoint("http://localhost:9090/oauth/token", "access_token");
+            TokenRequestEndpoint tokenRequestEndpoint = new TokenRequestEndpoint(oAuth2Properties.getOauthPath() + "/authorize", config.getClientId(), config.getClientSecret());
+            TokenEndpoint tokenEndpoint = new TokenEndpoint(oAuth2Properties.getOauthPath() + "/token", "access_token");
             grantTypes.add(new AuthorizationCodeGrant(tokenRequestEndpoint, tokenEndpoint));
         }
         return grantTypes;
@@ -90,20 +89,12 @@ public class Swagger2Configuration {
                 UiConfiguration.Constants.DEFAULT_SUBMIT_METHODS, false, true, 60000L);
     }
 
-    private SecurityScheme securityScheme() {
-        return new OAuthBuilder()
-                .name("OAuth2")
-                .grantTypes(grantTypes())
-                .scopes(Arrays.asList(scopes()))
-                .build();
-    }
-
     /**
-     * 设置 swagger2 认证的安全上下文
+     * 这里设置 swagger2 认证的安全上下文
      */
     private SecurityContext securityContext() {
         return SecurityContext.builder()
-                .securityReferences(Collections.singletonList(new SecurityReference("oauth2", scopes())))
+                .securityReferences(Collections.singletonList(new SecurityReference("spring_oauth", scopes())))
                 .forPaths(PathSelectors.any())
                 .build();
     }
@@ -115,8 +106,21 @@ public class Swagger2Configuration {
      */
     private AuthorizationScope[] scopes() {
         return new AuthorizationScope[]{
-                new AuthorizationScope("all", "All scope!")
+                new AuthorizationScope("all", "All scope is trusted!")
         };
+    }
+
+    /**
+     * 这个类决定了你使用哪种认证方式，我这里使用密码模式
+     * 其他方式自己摸索一下，完全莫问题啊
+     */
+    private SecurityScheme securityScheme() {
+        GrantType grantType = new ResourceOwnerPasswordCredentialsGrant(oAuth2Properties.getOauthPath());
+        return new OAuthBuilder()
+                .name("spring_oauth")
+                .grantTypes(Collections.singletonList(grantType))
+                .scopes(Arrays.asList(scopes()))
+                .build();
     }
 
 }

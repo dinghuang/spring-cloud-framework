@@ -104,7 +104,27 @@ dinghuang:
     enabled: true
   exception-intercept:
     enabled: true
-#熔断器超时时间设置
+  security:
+    oauth2:
+      enabled: true
+      oauthPath:  http://localhost:8002/oauth-service/oauth/
+      clients[0]:
+        clientId: client1
+        clientSecret: client1
+        redirectUrl:  http://localhost:8002/oauth-service/index
+        scopes: all
+        accessTokenValiditySeconds: 6000
+        refreshTokenValiditySeconds: 6000
+security:
+  oauth2:
+    client:
+      access-token-uri: http://localhost:8002/oauth-service/oauth/token
+      user-authorization-uri: http://localhost:8002/oauth-service/authorize
+      client-id: client1
+      client-secret: client1
+    resource:
+      user-info-uri: http://localhost:8002/oauth-service/user
+      prefer-token-info: false
 hystrix:
   command:
     default:

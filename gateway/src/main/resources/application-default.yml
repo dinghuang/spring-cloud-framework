@@ -8,7 +8,16 @@ server:
     accept-count: 1000
     max-threads: 1000
     max-connections: 2000
-
+security:
+  oauth2:
+    client:
+      access-token-uri: http://localhost:8002/oauth-service/oauth/token
+      user-authorization-uri: http://localhost:8002/oauth-service/authorize
+      client-id: client1
+      client-secret: client1
+    resource:
+      user-info-uri: http://localhost:8002/oauth-service/user
+      prefer-token-info: false
 ribbon:
   eureka:
     enable: true
@@ -35,6 +44,8 @@ zuul:
   routes:
       demo-service:
         path: /demo-service/**
+      oauth-service:
+        path: /oauth-service/**
 
 hystrix:
   command:
