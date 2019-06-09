@@ -53,7 +53,7 @@ public class CustomerResourceServerConfig extends ResourceServerConfigurerAdapte
                 .and()
                 .authorizeRequests()
                 .antMatchers(HttpMethod.OPTIONS).permitAll()
-                .antMatchers("/validator_token","/", "/index", "/error", "/session/invalid", "/401", "/login", "/webjars/**", "/swagger-resources/**", "/swagger-ui.html/**", "/null/swagger-resources/configuration/ui", "/v2/api-docs", "/favicon.ico").permitAll()
+                .antMatchers("/", "/index", "/error", "/session/invalid", "/401", "/login", "/webjars/**", "/swagger-resources/**", "/swagger-ui.html/**", "/null/swagger-resources/configuration/ui", "/v2/api-docs", "/favicon.ico").permitAll()
                 .anyRequest().authenticated().and().csrf().disable();
     }
 

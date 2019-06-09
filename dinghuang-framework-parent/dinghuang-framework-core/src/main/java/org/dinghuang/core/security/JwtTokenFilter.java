@@ -2,6 +2,7 @@ package org.dinghuang.core.security;
 
 import com.alibaba.fastjson.JSON;
 import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jwts;
 import org.apache.commons.lang.StringUtils;
 import org.dinghuang.core.client.OauthFeignClient;
@@ -64,13 +65,17 @@ public class JwtTokenFilter implements Filter {
             } else {
                 //todo 对token进行校验
                 OauthFeignClient oauthFeignClient = (OauthFeignClient) SpringContextUtils.getContext().getBean("oauthFeignClient");
-                oauthFeignClient.validatorToken(token);
+                oauthFeignClient.validatorToken();
             }
             chain.doFilter(request, response);
         } catch (OAuth2Exception e) {
             SecurityContextHolder.clearContext();
             LOGGER.debug("Authentication request failed: ", e);
             ((HttpServletResponse) response).sendError(HttpServletResponse.SC_UNAUTHORIZED, "Invalid JWT token.");
+        }catch (ExpiredJwtException expiredJwtException){
+            SecurityContextHolder.clearContext();
+            LOGGER.debug("Authentication request failed: ", expiredJwtException);
+            ((HttpServletResponse) response).sendError(HttpServletResponse.SC_UNAUTHORIZED, "Expired JWT token.");
         }
     }
 
