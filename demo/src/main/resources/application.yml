@@ -115,16 +115,16 @@ dinghuang:
         scopes: all
         accessTokenValiditySeconds: 6000
         refreshTokenValiditySeconds: 6000
-security:
-  oauth2:
-    client:
-      access-token-uri: http://localhost:8002/oauth-service/oauth/token
-      user-authorization-uri: http://localhost:8002/oauth-service/authorize
-      client-id: client1
-      client-secret: client1
-    resource:
-      user-info-uri: http://localhost:8002/oauth-service/user
-      prefer-token-info: false
+#security:
+#  oauth2:
+#    client:
+#      accessTokenUri: http://localhost:8002/oauth-service/oauth/token
+#      user-authorization-uri: http://localhost:8002/oauth-service/authorize
+#      client-id: client1
+#      client-secret: client1
+#    resource:
+#      user-info-uri: http://localhost:8002/oauth-service/user
+#      prefer-token-info: false
 hystrix:
   command:
     default:
