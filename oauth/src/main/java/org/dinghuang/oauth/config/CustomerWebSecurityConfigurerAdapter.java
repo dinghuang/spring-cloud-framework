@@ -14,12 +14,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.web.servlet.ServletListenerRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.core.session.SessionRegistry;
 import org.springframework.security.core.session.SessionRegistryImpl;
@@ -50,27 +52,21 @@ public class CustomerWebSecurityConfigurerAdapter extends WebSecurityConfigurerA
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http.httpBasic().and().formLogin().loginPage("/login").failureUrl("/login-error")
-                .and()
-                .exceptionHandling().accessDeniedPage("/401")
-                .and()
-                .authorizeRequests().antMatchers("/session/invalid")
-                .permitAll()
-                .anyRequest().authenticated()
-                .and()
+        http.authorizeRequests().antMatchers(HttpMethod.OPTIONS).permitAll().anyRequest().authenticated().and()
+                .httpBasic().and().csrf().disable()
                 .sessionManagement()
                 .invalidSessionUrl("/session/invalid")
                 .maximumSessions(1)
                 .maxSessionsPreventsLogin(true)
-                .expiredSessionStrategy(new CustomerExpiredSessionHandler())
-                .sessionRegistry(sessionRegistry())
                 .and()
+                .sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED)
+//                .expiredSessionStrategy(new CustomerExpiredSessionHandler())
+//                .sessionRegistry(sessionRegistry())
+//                .and()
                 .and()
                 .logout()
                 .logoutSuccessUrl("/")
-                .permitAll().logoutSuccessHandler(logoutSuccessHandler())
-                .and()
-                .csrf().disable();
+                .permitAll().logoutSuccessHandler(logoutSuccessHandler());
     }
 
     @Autowired

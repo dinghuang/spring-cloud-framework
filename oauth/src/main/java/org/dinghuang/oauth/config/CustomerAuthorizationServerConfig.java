@@ -106,10 +106,11 @@ public class CustomerAuthorizationServerConfig extends AuthorizationServerConfig
                         .secret("{bcrypt}" + new BCryptPasswordEncoder().encode(config.getClientSecret()))
                         .resourceIds(config.getClientId())
                         .accessTokenValiditySeconds(config.getAccessTokenValiditySeconds())
-                        .refreshTokenValiditySeconds(60 * 60 * 24 * 15)
+                        .refreshTokenValiditySeconds(config.getRefreshTokenValiditySeconds())
                         //OAuth2支持的验证模式 密码模式、授权码模式、token刷新
                         .authorizedGrantTypes("refresh_token", "password", "authorization_code")
-                        .scopes("all");
+                        .redirectUris(config.getRedirectUrl())
+                        .scopes(config.getScopes());
             }
         }
     }
@@ -128,10 +129,9 @@ public class CustomerAuthorizationServerConfig extends AuthorizationServerConfig
         };
 
         authorizationServerSecurityConfigurer.tokenKeyAccess("permitAll()")
-                .checkTokenAccess("permitAll()")
                 .allowFormAuthenticationForClients()
+                .checkTokenAccess("isAuthenticated()")
                 .addTokenEndpointAuthenticationFilter(new CorsFilter(source));
-        authorizationServerSecurityConfigurer.authenticationEntryPoint(new CustomerAuthenticationEntryPoint())
-                .checkTokenAccess("isAuthenticated()");
+        authorizationServerSecurityConfigurer.authenticationEntryPoint(new CustomerAuthenticationEntryPoint());
     }
 }

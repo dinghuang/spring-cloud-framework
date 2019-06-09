@@ -72,7 +72,7 @@ public class UserController {
     }
 
     @GetMapping(value = "/query_by_page")
-    @PreAuthorize("hasRole('ROLE_USER')")
+//    @PreAuthorize("hasRole('ROLE_USER')")
     @ApiOperation(value = "分页查询用户信息")
     public ResponseEntity<PageableDTO<UserDTO>> queryByPage(@Valid PageableSearchDTO pageableSearchDTO) {
         return Optional.ofNullable(userService.queryByPage(pageableSearchDTO))

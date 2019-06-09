@@ -1,6 +1,5 @@
 package org.dinghuang.oauth.handler;
 
-import com.alibaba.fastjson.JSON;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,42 +37,33 @@ public class CustomerLoginInSuccessHandler extends SavedRequestAwareAuthenticati
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException {
 
-        LOGGER.info("【AppLoginInSuccessHandler】 onAuthenticationSuccess authentication={}", authentication);
-
-        String header = request.getHeader("Authorization");
-
+        //todo 对header做操作
+//        String header = request.getHeader("Authorization");
+        String header = "Basic Y2xpZW50MTpjbGllbnQx";
         if (header == null || !header.startsWith("Basic ")) {
             throw new UnapprovedClientAuthenticationException("请求头中无client信息");
         }
         String[] tokens = this.extractAndDecodeHeader(header, request);
-
         assert tokens.length == 2;
-
         String clientId = tokens[0];
         String clientSecret = tokens[1];
-
         ClientDetails clientDetails = clientDetailsService.loadClientByClientId(clientId);
         if (clientDetails == null) {
             throw new UnapprovedClientAuthenticationException("clientId 对应的配置信息不存在" + clientId);
         } else {
-            String encodeClient = clientDetails.getClientSecret().substring(8,clientDetails.getClientSecret().length());
+            String encodeClient = clientDetails.getClientSecret().substring(8, clientDetails.getClientSecret().length());
             if (!BCrypt.checkpw(clientSecret, encodeClient)) {
                 throw new UnapprovedClientAuthenticationException("clientSecret 不匹配" + clientId);
             }
         }
-
         TokenRequest tokenRequest = new TokenRequest(new HashMap<>(0), clientId, clientDetails.getScope(), "custom");
-
         OAuth2Request oAuth2Request = tokenRequest.createOAuth2Request(clientDetails);
-
         OAuth2Authentication oAuth2Authentication = new OAuth2Authentication(oAuth2Request, authentication);
-
         OAuth2AccessToken token = authorizationServerTokenServices.createAccessToken(oAuth2Authentication);
-
+        response.setHeader("Authorization", token.getTokenType() + " " + token.getValue());
         response.setContentType("application/json;charset=UTF-8");
-        response.getWriter().write(JSON.toJSONString(token));
-        LOGGER.info("token={}", JSON.toJSONString(token));
-
+        String redirectUri = request.getHeader("Origin");
+        response.sendRedirect(redirectUri != null ? redirectUri : "/index");
     }
 
     /**

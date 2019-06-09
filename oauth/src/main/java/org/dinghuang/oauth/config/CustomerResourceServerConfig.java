@@ -3,8 +3,11 @@ package org.dinghuang.oauth.config;
 //import org.dinghuang.oauth.entrypoint.CustomerAuthenticationEntryPoint;
 
 import org.dinghuang.oauth.entrypoint.CustomerAuthenticationEntryPoint;
+import org.dinghuang.oauth.properties.OAuth2ClientProperties;
+import org.dinghuang.oauth.properties.OAuth2Properties;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.oauth2.config.annotation.web.configuration.EnableResourceServer;
 import org.springframework.security.oauth2.config.annotation.web.configuration.ResourceServerConfigurerAdapter;
@@ -29,6 +32,8 @@ public class CustomerResourceServerConfig extends ResourceServerConfigurerAdapte
     private AuthenticationSuccessHandler authenticationSuccessHandler;
     @Autowired
     private AuthenticationFailureHandler authenticationFailureHandler;
+    @Autowired
+    private OAuth2Properties oAuth2Properties;
 
     /**
      * 这里设置需要token验证的url
@@ -40,37 +45,23 @@ public class CustomerResourceServerConfig extends ResourceServerConfigurerAdapte
     @Override
     public void configure(HttpSecurity http) throws Exception {
         //todo esb的请求排除掉
-        http.formLogin() //登录成功处理器
+        http
+                .formLogin() //登录成功处理器
                 .successHandler(authenticationSuccessHandler)
                 //登录失败处理器
                 .failureHandler(authenticationFailureHandler)
                 .and()
-                //安全过滤器
-                .apply(permitAllSecurityConfig)
-                .and()
-                .exceptionHandling().authenticationEntryPoint(new CustomerAuthenticationEntryPoint())
-                .accessDeniedPage("/401")
-                .and()
-                .requestMatchers()
-                .antMatchers("/api/**").and()
                 .authorizeRequests()
-                .antMatchers("/401").permitAll()
-                .antMatchers("/login").permitAll()
-                .antMatchers("/webjars/**","/swagger-resources/**","/swagger-ui.html/**","/null/swagger-resources/configuration/ui","/v2/api-docs","/favicon.ico").authenticated()
-                .antMatchers().permitAll()
-                .antMatchers("/oauth/**").permitAll()
-                .anyRequest().authenticated()
-                .and()
-//                .and()
-//                .requestMatchers().antMatchers("/oauth/**")
-//                .and()
-//                .authorizeRequests()
-//                .antMatchers("/oauth/**").authenticated()
-                .csrf().disable();
+                .antMatchers(HttpMethod.OPTIONS).permitAll()
+                .antMatchers("/", "/index", "/error", "/session/invalid", "/401", "/login", "/webjars/**", "/swagger-resources/**", "/swagger-ui.html/**", "/null/swagger-resources/configuration/ui", "/v2/api-docs", "/favicon.ico").permitAll()
+                .anyRequest().authenticated().and().csrf().disable();
     }
 
     @Override
     public void configure(ResourceServerSecurityConfigurer resources) {
         resources.authenticationEntryPoint(new CustomerAuthenticationEntryPoint());
+        for (OAuth2ClientProperties config : oAuth2Properties.getClients()) {
+            resources.resourceId(config.getClientId()).stateless(true);
+        }
     }
 }

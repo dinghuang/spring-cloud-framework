@@ -9,7 +9,6 @@ import org.springframework.data.redis.connection.RedisConnectionFactory;
 import org.springframework.security.oauth2.provider.token.TokenStore;
 import org.springframework.security.oauth2.provider.token.store.JwtAccessTokenConverter;
 import org.springframework.security.oauth2.provider.token.store.JwtTokenStore;
-import org.springframework.security.oauth2.provider.token.store.redis.RedisTokenStore;
 
 /**
  * token储存配置
@@ -34,7 +33,7 @@ public class TokenStoreConfig {
     @Bean
     @ConditionalOnProperty(prefix = "dinghuang.security.oauth2", name = "storeType", havingValue = "redis")
     public TokenStore redisTokenStore() {
-        return new RedisTokenStore(redisConnectionFactory);
+        return new MyRedisTokenStore(redisConnectionFactory);
     }
 
     /**

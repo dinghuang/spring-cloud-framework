@@ -21,7 +21,7 @@ public class CustomerAuthenticationEntryPoint implements AuthenticationEntryPoin
 
     @Override
     public void commence(HttpServletRequest request, HttpServletResponse response, AuthenticationException authException) throws IOException {
-        LOGGER.info("地址被拦截:{}", request.getRequestURI());
+        LOGGER.info("地址被拦截:{},原因是{}", request.getRequestURI(), authException.getMessage());
         response.sendRedirect("/401");
     }
 }
