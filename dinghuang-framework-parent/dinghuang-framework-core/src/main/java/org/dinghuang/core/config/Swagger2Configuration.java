@@ -115,7 +115,7 @@ public class Swagger2Configuration {
      * 其他方式自己摸索一下，完全莫问题啊
      */
     private SecurityScheme securityScheme() {
-        GrantType grantType = new ResourceOwnerPasswordCredentialsGrant(oAuth2Properties.getOauthPath());
+        GrantType grantType = new ResourceOwnerPasswordCredentialsGrant(oAuth2Properties.getOauthPath()+"/token");
         return new OAuthBuilder()
                 .name("spring_oauth")
                 .grantTypes(Collections.singletonList(grantType))

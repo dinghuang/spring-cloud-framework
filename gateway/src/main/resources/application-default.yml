@@ -11,12 +11,12 @@ server:
 #security:
 #  oauth2:
 #    client:
-#      access-token-uri: http://localhost:8002/oauth-service/oauth/token
-#      user-authorization-uri: http://localhost:8002/oauth-service/authorize
+#      access-token-uri: http://localhost:9090/oauth/token
+#      user-authorization-uri: http://localhost:9090/oauth/authorize
 #      client-id: client1
 #      client-secret: client1
 #    resource:
-#      user-info-uri: http://localhost:8002/oauth-service/user
+#      user-info-uri: http://localhost:9090/user
 #      prefer-token-info: false
 ribbon:
   eureka:
