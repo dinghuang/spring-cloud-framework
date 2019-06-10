@@ -1,7 +1,6 @@
 package org.dinghuang.core;
 
 import org.dinghuang.core.config.ExceptionInterceptConfiguration;
-import org.dinghuang.core.config.FeignHystrixConcurrencyStrategy;
 import org.dinghuang.core.config.JsonDataConvertConfiguration;
 import org.dinghuang.core.config.Swagger2Configuration;
 import org.dinghuang.core.controller.DruidStatController;
@@ -30,7 +29,6 @@ import org.springframework.context.annotation.Configuration;
         SqlInjectorConfiguration.class,
         JsonDataConvertConfiguration.class,
         OAuth2Properties.class,
-        FeignHystrixConcurrencyStrategy.class,
         DruidStatController.class,
         CustomMetaObjectConfiguration.class})
 public class DinghuangFrameworkCoreAutoConfiguration {

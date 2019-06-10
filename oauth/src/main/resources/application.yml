@@ -105,7 +105,7 @@ dinghuang:
         clientSecret: client1
         redirectUrl: http://localhost:9090/index
         scopes: all
-        accessTokenValiditySeconds: 1000
+        accessTokenValiditySeconds: 1000000
         refreshTokenValiditySeconds: 300
 #熔断器超时时间设置
 hystrix:
