@@ -1,5 +1,5 @@
 server:
-  port: 9090
+  port: 9091
   session:
     timeout: 60
 spring:
@@ -96,14 +96,14 @@ dinghuang:
     oauth2:
       clientEnabled: false
       enabled: true
-      oauthPath: http://localhost:9090/oauth
+      oauthPath: http://localhost:9091/oauth
       #jwt redis
       storeType: jwt
       jwtSigningKey: dinghuang
       clients[0]:
         clientId: client1
         clientSecret: client1
-        redirectUrl: http://localhost:9090/index
+        redirectUrl: http://localhost:9091/index
         scopes: all
         accessTokenValiditySeconds: 1000000
         refreshTokenValiditySeconds: 300
