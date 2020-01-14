@@ -46,13 +46,13 @@ public class CodeGeneratorUtils {
 
     public static void main(String[] args) throws Exception {
         CodeGeneratorUtils codeGenerateUtils = new CodeGeneratorUtils();
-        codeGenerateUtils.generate(true, "test_order", "order", "订单", "org.dinghuang.demo.application", "jdbc:mysql://127.0.0.1:3306/sale_customer_dev?useUnicode=true&characterEncoding=utf-8&useSSL=false", "root", "root");
+        codeGenerateUtils.generate(true, "test_order", "order", "订单", "org.dinghuang.demo.application", "jdbc:mysql://127.0.0.1:3306/adas?useUnicode=true&characterEncoding=utf-8&useSSL=false", "root", "root");
     }
 
     /**
      * 自动生成代码
      * <p>
-     * 例如(true, "cus_potential_customer", "potential_customer", "潜在客户", "com.crland.sale.customer", "jdbc:mysql://127.0.0.1:3306/sale_customer_dev?useUnicode=true&characterEncoding=utf-8&useSSL=false", "root", "root")
+     * 例如(true, "aaa_asd", "asd", "哈哈", "com.dinghuang.sale.customer", "jdbc:mysql://127.0.0.1:3306/adas?useUnicode=true&characterEncoding=utf-8&useSSL=false", "root", "root")
      *
      * @param cover            是否覆盖
      * @param tableName        表名

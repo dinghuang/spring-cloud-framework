@@ -1,7 +1,9 @@
 package org.dinghuang.core.config;
 
+import com.netflix.hystrix.exception.HystrixRuntimeException;
 import org.dinghuang.core.constant.ReposeEntityConstant;
 import org.dinghuang.core.exception.*;
+import org.dinghuang.core.utils.ReflectionUtils;
 import org.dinghuang.core.utils.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -29,6 +31,8 @@ import javax.validation.ConstraintViolationException;
 import javax.validation.ValidationException;
 import java.util.Arrays;
 import java.util.Set;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * Controller异常拦截器，后续可以继续添加进来一些异常
@@ -45,6 +49,8 @@ public class ExceptionInterceptConfiguration {
     private boolean logging;
 
     private static Logger LOGGER = LoggerFactory.getLogger(ExceptionInterceptConfiguration.class);
+
+    private static final Pattern DUPLICATE_ONE = Pattern.compile("content:\n");
 
     /**
      * 400 - Bad Request
@@ -219,7 +225,7 @@ public class ExceptionInterceptConfiguration {
     @ExceptionHandler(CommonValidateException.class)
     public ResponseEntity handleValidateException(CommonValidateException e) {
         if (logging) {
-            LOGGER.error("data validation exception{}", e);
+            LOGGER.error("data validation exception{}", ReposeEntityConstant.VALIDATE_EXCEPTION + Arrays.toString(e.getParameters()));
         }
         return new ResponseEntity<>(ReposeEntityConstant.VALIDATE_EXCEPTION + Arrays.toString(e.getParameters()), HttpStatus.INTERNAL_SERVER_ERROR);
     }
@@ -284,11 +290,48 @@ public class ExceptionInterceptConfiguration {
      */
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     @ExceptionHandler(FeignException.class)
-    public ResponseEntity handleFeignException(FeignException e) {
+    public ResponseEntity handleCustomerFeignException(FeignException e) {
         if (logging) {
             LOGGER.error("invoking an external service exception{}", e);
         }
         return new ResponseEntity<>(ReposeEntityConstant.INVOKING_EXTERNAL_SERVICE_EXCEPTION + Arrays.toString(e.getParameters()), HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
+    /**
+     * Feign异常
+     * 500 - Internal Server Error
+     */
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+    @ExceptionHandler(feign.FeignException.class)
+    public ResponseEntity handleFeignException(feign.FeignException e) {
+        if (logging) {
+            LOGGER.error("invoking an external service exception{}", e);
+        }
+        return new ResponseEntity<>(ReposeEntityConstant.INVOKING_EXTERNAL_SERVICE_EXCEPTION + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
+    /**
+     * Feign异常
+     * 500 - Internal Server Error
+     */
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+    @ExceptionHandler(HystrixRuntimeException.class)
+    public ResponseEntity handleHystrixRuntimeException(HystrixRuntimeException e) {
+        if (logging) {
+            LOGGER.error("invoking an external service exception{}", e);
+        }
+        Object object = ReflectionUtils.getFieldValue(e.getCause(), "detailMessage");
+        String value;
+        if (object != null) {
+            value = object.toString();
+            Matcher ms = DUPLICATE_ONE.matcher(value);
+            if (ms.find()) {
+                value = value.substring(ms.end() + 1, value.length() - 1);
+            }
+        } else {
+            value = e.getMessage();
+        }
+        return new ResponseEntity<>(value, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
 }

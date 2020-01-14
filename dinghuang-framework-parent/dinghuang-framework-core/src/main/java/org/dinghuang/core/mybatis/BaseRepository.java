@@ -60,6 +60,12 @@ public interface BaseRepository<T extends BaseModel> extends BaseMapper<T> {
         if (queryWrapper != null) {
             searchQuery = (QueryWrapper<T>) queryWrapper;
         }
+        if (page.getAscs() != null) {
+            searchQuery.orderByAsc(page.getAscs());
+        }
+        if (page.getDescs() != null) {
+            searchQuery.orderByDesc(page.getDescs());
+        }
         searchQuery.allEq(page.getCondition());
         return (Pageable<T>) selectPage(page, searchQuery);
     }

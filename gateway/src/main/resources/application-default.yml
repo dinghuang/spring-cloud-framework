@@ -1,0 +1,62 @@
+spring:
+  application:
+    name: gateway
+
+server:
+  port: 8002
+  tomcat:
+    accept-count: 1000
+    max-threads: 1000
+    max-connections: 2000
+dinghuang:
+  swagger:
+    enabled: true
+  exception-intercept:
+    enabled: true
+  security:
+    oauth2:
+      enabled: true
+      clientEnabled: true
+      oauthPath:  http://localhost:9090/oauth
+      jwtSigningKey:  dinghuang
+      clients[0]:
+        clientId: client1
+        clientSecret: client1
+        redirectUrl:  http://localhost:9090/index
+        scopes: all
+ribbon:
+  eureka:
+    enable: true
+  ConnectTimeout: 50000
+  ReadTimeout: 50000
+  ServerListRefreshInterval: 1000
+
+management:
+  server:
+    port: 8012
+
+
+zuul:
+  sensitive-headers:  #设置忽略的头信息，设置为空能解决会话保持问题
+  add-host-header: true #设为true才能保持Host头信息处理正确
+  strip-prefix: false
+  host:
+    max-total-connections: 1000
+    max-per-route-connections: 1000
+    connect-timeout-millis: 10000
+    socket-timeout-millis: 60000
+  semaphore:
+    max-semaphores: 1000
+  routes:
+      demo-service:
+        path: /demo-service/**
+      oauth-service:
+        path: /oauth-service/**
+
+hystrix:
+  command:
+    default:
+      execution:
+        isolation:
+          thread:
+            timeoutInMilliseconds: 10000000

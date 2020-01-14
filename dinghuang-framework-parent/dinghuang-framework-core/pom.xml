@@ -16,7 +16,6 @@
         <java.version>1.8</java.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-        <spring-boot>2.1.0.RELEASE</spring-boot>
         <fastjson>1.2.47</fastjson>
         <commons-collections>3.2.2</commons-collections>
         <commons-lang3>3.8.1</commons-lang3>
@@ -30,6 +29,11 @@
         <liquibase-core>3.5.3</liquibase-core>
         <validation-api>2.0.1.Final</validation-api>
         <hibernate-validator>6.0.15.Final</hibernate-validator>
+        <mapstruct>1.3.0.Final</mapstruct>
+        <actuator>2.1.5.RELEASE</actuator>
+        <hystrix>1.4.7.RELEASE</hystrix>
+        <freemarker>2.3.28</freemarker>
+        <jjwt>0.9.1</jjwt>
     </properties>
 
     <dependencies>
@@ -119,17 +123,48 @@
         <dependency>
             <groupId>org.freemarker</groupId>
             <artifactId>freemarker</artifactId>
-            <version>2.3.28</version>
+            <version>${freemarker}</version>
         </dependency>
-        <!-- 引入spring bootactuator监控 -->
+        <!-- 引入spring boot actuator监控 -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-actuator</artifactId>
+            <version>${spring-boot}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.mapstruct</groupId>
+            <artifactId>mapstruct-jdk8</artifactId>
+            <version>${mapstruct}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.mapstruct</groupId>
+            <artifactId>mapstruct-processor</artifactId>
+            <version>${mapstruct}</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-hystrix</artifactId>
+            <version>${hystrix}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.security.oauth</groupId>
+            <artifactId>spring-security-oauth2</artifactId>
+            <version>${spring-boot}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.security</groupId>
+            <artifactId>spring-security-jwt</artifactId>
+            <version>1.0.10.RELEASE</version>
+        </dependency>
+        <dependency>
+            <groupId>io.jsonwebtoken</groupId>
+            <artifactId>jjwt</artifactId>
+            <version>${jjwt}</version>
         </dependency>
     </dependencies>
 
     <build>
-        <finalName>dinghuang-framework-core</finalName>
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -141,6 +176,7 @@
                 </configuration>
             </plugin>
         </plugins>
+        <finalName>dinghuang-framework-core</finalName>
     </build>
 
     <distributionManagement>
