@@ -57,7 +57,7 @@ spring:
 #    password: root
   #liqubase是否开启
   liquibase:
-    enabled: true
+    enabled: false
     changeLog: "classpath:/db/changelog/db.changelog-master.xml"
     checkChangeLogLocation: true
     #用于跟踪更改历史记录的表的名称。
@@ -102,3 +102,10 @@ dinghuang:
   # 是否对异常进行统一拦截处理输出给前端
   exception-intercept:
     enabled: true
+jodconverter:
+  local:
+    enabled: true
+    max-tasks-per-process: 5
+#    port-numbers: 8100, 8101, 8102, 8103, 8104, 8105, 8106, 8107, 8108, 8109
+    port-numbers: 8100
+  office-home: /Applications/OpenOffice.app
