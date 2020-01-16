@@ -1,40 +1,38 @@
-package org.dinghuang.core.config;
+package org.dinghuang.demo.conf;
 
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.context.request.async.DeferredResult;
 import springfox.documentation.builders.ApiInfoBuilder;
 import springfox.documentation.builders.PathSelectors;
+import springfox.documentation.builders.RequestHandlerSelectors;
 import springfox.documentation.service.ApiInfo;
 import springfox.documentation.service.Contact;
 import springfox.documentation.spi.DocumentationType;
 import springfox.documentation.spring.web.plugins.Docket;
-import springfox.documentation.swagger.web.UiConfiguration;
-import springfox.documentation.swagger2.annotations.EnableSwagger2;
+
 
 /**
  * @author dinghuang123@gmail.com
- * @since 2019/2/26
+ * @since 2020/1/16
  */
 @Configuration
-@ConditionalOnProperty(prefix = "dinghuang.swagger", name = "enabled", havingValue = "true")
-@EnableSwagger2
-public class Swagger2Configuration {
+public class SwaggerConfigure {
 
-    @Value("${spring.application.name}")
-    private String serviceName;
+    @Value("${spring.application.name:service}")
+    String serviceName;
 
     @Bean
-    public Docket defaultApi() {
+    public Docket moduleApi() {
         return new Docket(DocumentationType.SWAGGER_2)
-                .groupName("all api")
+                .groupName("module 1")
                 .genericModelSubstitutes(DeferredResult.class)
                 .useDefaultResponseMessages(false)
                 .forCodeGeneration(false)
                 .select()
+                .apis(RequestHandlerSelectors.basePackage("org.dinghuang.demo"))
                 .apis(input -> {
                     //只有添加了ApiOperation注解的method才在API中显示
                     return input != null && input.isAnnotatedWith(ApiOperation.class);
@@ -42,27 +40,19 @@ public class Swagger2Configuration {
                 //过滤的接口
                 .paths(PathSelectors.any())
                 .build()
-                .apiInfo(apiInfo());
+                .apiInfo(moduleApiInfo());
     }
 
-    /**
-     * 项目信息
-     */
-    private ApiInfo apiInfo() {
+
+    private ApiInfo moduleApiInfo() {
         return new ApiInfoBuilder()
                 .title(serviceName + " RESTful APIs")
                 .description(serviceName + "系统接口文档说明")
+                .version("1.0")
+                .termsOfServiceUrl("NO terms of service")
                 .contact(new Contact("dinghuang", "https://strongsickcat.com", "dinghuang123@gmail.com"))
                 .license("The Apache License, Version 2.0")
                 .licenseUrl("http://www.apache.org/licenses/LICENSE-2.0.html")
-                .version("1.0")
                 .build();
     }
-
-    @Bean
-    UiConfiguration uiConfig() {
-        return new UiConfiguration(null, "none", "alpha", "schema",
-                UiConfiguration.Constants.DEFAULT_SUBMIT_METHODS, false, true, 60000L);
-    }
-
 }

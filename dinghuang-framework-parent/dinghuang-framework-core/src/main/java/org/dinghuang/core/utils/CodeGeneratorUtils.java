@@ -27,6 +27,7 @@ public class CodeGeneratorUtils {
     private static final String AUTHOR = "dinghuang123@gmail.com";
     private static final String MYSQL_DRIVER = "com.mysql.jdbc.Driver";
     private static final String ORACLE_DRIVER = "oracle.jdbc.driver.OracleDriver";
+    private static final String POSTGRESQL_DRIVER = "org.postgresql.Driver";
     private static final String COLUMN_NAME = "COLUMN_NAME";
     private static final String DATA_TYPE = "DATA_TYPE";
     private static final String COLUMN_COMMENT = "COLUMN_COMMENT";
@@ -42,6 +43,7 @@ public class CodeGeneratorUtils {
     private static final String COLUMN_KEY = "COLUMN_KEY";
     private static final String PRI = "PRI";
     private static final String ORACLE = "jdbc:oracle:thin";
+    private static final String POSTGRESSQL = "jdbc:postgresql:";
     private static final String DTO = ".dto.";
     private Boolean cover = false;
     private String priMaryName = "Id";
@@ -101,7 +103,7 @@ public class CodeGeneratorUtils {
                     columnClass.setChangeColumnNameUp(map.get(COLUMN_NAME).toString().toUpperCase());
                 }
                 //字段在数据库的注释
-                columnClass.setColumnComment(map.get(COLUMN_COMMENT).toString());
+                columnClass.setColumnComment(map.get(COLUMN_COMMENT) == null ? null : map.get(COLUMN_COMMENT).toString());
                 //是否必填
                 columnClass.setIsNullAble("NO".equals(map.get(IS_NULLABLE)));
                 //字段长度
@@ -166,6 +168,7 @@ public class CodeGeneratorUtils {
     private List<Map<String, Object>> getColumnData(String url, String user, String password) throws SQLException {
         Connection conn = null;
         String sql;
+        Boolean preparedStatement = true;
         if (url.contains(ORACLE)) {
             sql = "SELECT utc.column_name AS COLUMN_NAME,utc.data_type AS DATA_TYPE,utc.data_length AS CHARACTER_MAXIMUM_LENGTH,CASE " +
                     "utc.nullable WHEN 'N' THEN 'NO' ELSE 'YES' END AS IS_NULLABLE,ucc.comments AS COLUMN_COMMENT,CASE utc.column_name " +
@@ -173,31 +176,68 @@ public class CodeGeneratorUtils {
                     "col.constraint_name AND con.constraint_type = 'P' AND col.table_name = '" + this.tableName.toUpperCase() + "') THEN 'PRI' ELSE 'OTHER' END AS COLUMN_KEY " +
                     "FROM user_tab_columns utc,user_col_comments ucc WHERE utc.table_name = '" + this.tableName.toUpperCase() + "' AND utc.table_name = ucc.table_name " +
                     "AND utc.column_name = ucc.column_name ORDER BY utc.column_id";
+        } else if (url.contains(POSTGRESSQL)) {
+            sql = "SELECT COLUMN_NAME , data_type AS DATA_TYPE, COALESCE ( character_maximum_length, numeric_precision,- 1 ) " +
+                    "AS CHARACTER_MAXIMUM_LENGTH, is_nullable,CASE    WHEN b.pk_name IS NULL THEN  'OTHER' ELSE'PRI'  END AS COLUMN_KEY," +
+                    " C.DeText AS COLUMN_COMMENT FROM information_schema. COLUMNS LEFT JOIN ( SELECT  pg_attr.attname AS colname, " +
+                    " pg_constraint.conname AS pk_name  FROM  pg_constraint  INNER JOIN pg_class ON pg_constraint.conrelid = pg_class.oid" +
+                    "  INNER JOIN pg_attribute pg_attr ON pg_attr.attrelid = pg_class.oid   AND pg_attr.attnum = pg_constraint.conkey [ 1 ]" +
+                    "  INNER JOIN pg_type ON pg_type.oid = pg_attr.atttypid  WHERE  pg_class.relname = '" + this.tableName + "'   AND pg_constraint.contype = 'p'  ) " +
+                    "b ON b.colname = information_schema.COLUMNS. COLUMN_NAME LEFT JOIN ( SELECT  attname,  description AS DeText  FROM  pg_class  " +
+                    "LEFT JOIN pg_attribute pg_attr ON pg_attr.attrelid = pg_class.oid  LEFT JOIN pg_description pg_desc ON pg_desc.objoid = pg_attr.attrelid  " +
+                    " AND pg_desc.objsubid = pg_attr.attnum  WHERE  pg_attr.attnum > 0   AND pg_attr.attrelid = pg_class.oid   AND pg_class.relname = '" + this.tableName + "'  ) " +
+                    "C ON C.attname = information_schema.COLUMNS.COLUMN_NAME WHERE table_schema = 'public'  AND TABLE_NAME = '" + this.tableName + "' ORDER BY ordinal_position ASC";
+            preparedStatement = false;
         } else {
             sql = "select * from information_schema.columns where TABLE_NAME='" + this.tableName + "'";
         }
-        PreparedStatement stmt = null;
-        try {
-            conn = getConnection(url, user, password);
-            stmt = conn.prepareStatement(sql);
-            ResultSet rs = stmt.executeQuery(sql);
-            return convertList(rs);
-        } catch (Exception e) {
-            LOGGER.error("数据库连接失败");
-            throw new CommonException("数据库连接失败", e);
-        } finally {
-            if (conn != null) {
-                conn.close();
+        if (preparedStatement) {
+            PreparedStatement stmt = null;
+            try {
+                conn = getConnection(url, user, password);
+                stmt = conn.prepareStatement(sql);
+                ResultSet rs = stmt.executeQuery(sql);
+                return convertList(rs);
+            } catch (Exception e) {
+                LOGGER.error("数据库连接失败");
+                throw new CommonException("数据库连接失败", e);
+            } finally {
+                if (conn != null) {
+                    conn.close();
+                }
+                if (stmt != null) {
+                    stmt.close();
+                }
             }
-            if (stmt != null) {
-                stmt.close();
+        } else {
+            Statement stmt = null;
+            try {
+                conn = getConnection(url, user, password);
+                stmt = conn.createStatement();
+                ResultSet rs = stmt.executeQuery(sql);
+                return convertList(rs);
+            } catch (Exception e) {
+                LOGGER.error("数据库连接失败");
+                throw new CommonException("数据库连接失败", e);
+            } finally {
+                if (conn != null) {
+                    conn.close();
+                }
+                if (stmt != null) {
+                    stmt.close();
+                }
             }
+
+
         }
+
     }
 
     private Connection getConnection(String url, String user, String password) throws Exception {
         if (url.contains(ORACLE)) {
             Class.forName(ORACLE_DRIVER);
+        } else if (url.contains(POSTGRESSQL)) {
+            Class.forName(POSTGRESQL_DRIVER);
         } else {
             Class.forName(MYSQL_DRIVER);
         }
@@ -295,7 +335,11 @@ public class CodeGeneratorUtils {
             Map<String, Object> rowData = new HashMap<>(columnCount);
             for (int i = 1; i <= columnCount; i++) {
                 //获取键名及值
-                rowData.put(md.getColumnName(i), rs.getObject(i));
+                Object value = null;
+                if (rs.getObject(i) instanceof String) {
+                    value = ((String) rs.getObject(i)).toUpperCase();
+                }
+                rowData.put(md.getColumnName(i).toUpperCase(), value);
             }
             list.add(rowData);
         }

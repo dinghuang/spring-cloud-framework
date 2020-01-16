@@ -34,16 +34,12 @@
         <hystrix>1.4.7.RELEASE</hystrix>
         <freemarker>2.3.28</freemarker>
         <jjwt>0.9.1</jjwt>
+        <ojdbc>10.2.0.4.0</ojdbc>
+        <postgresql>42.2.9</postgresql>
     </properties>
 
     <dependencies>
         <!-- utils -->
-        <dependency>
-            <groupId>io.github.openfeign</groupId>
-            <artifactId>feign-hystrix</artifactId>
-            <version>${feign-hystrix}</version>
-            <scope>compile</scope>
-        </dependency>
         <dependency>
             <groupId>com.alibaba</groupId>
             <artifactId>fastjson</artifactId>
@@ -57,16 +53,56 @@
             <scope>compile</scope>
         </dependency>
         <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <version>${lombok}</version>
+        </dependency>
+        <!-- mybatis plus -->
+        <dependency>
+            <groupId>com.baomidou</groupId>
+            <artifactId>mybatis-plus-boot-starter</artifactId>
+            <version>${mybatis-plus-boot-starter}</version>
+        </dependency>
+        <dependency>
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-lang3</artifactId>
             <version>${commons-lang3}</version>
             <scope>compile</scope>
         </dependency>
+        <!-- data validation -->
         <dependency>
-            <groupId>com.alibaba</groupId>
-            <artifactId>druid-spring-boot-starter</artifactId>
-            <version>${druid}</version>
-            <scope>compile</scope>
+            <groupId>javax.validation</groupId>
+            <artifactId>validation-api</artifactId>
+            <version>${validation-api}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.hibernate</groupId>
+            <artifactId>hibernate-validator</artifactId>
+            <version>${hibernate-validator}</version>
+        </dependency>
+        <!-- liquibase -->
+        <dependency>
+            <groupId>org.liquibase</groupId>
+            <artifactId>liquibase-core</artifactId>
+            <version>${liquibase-core}</version>
+        </dependency>
+        <!-- mapstruct -->
+        <dependency>
+            <groupId>org.mapstruct</groupId>
+            <artifactId>mapstruct-jdk8</artifactId>
+            <version>${mapstruct}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.mapstruct</groupId>
+            <artifactId>mapstruct-processor</artifactId>
+            <version>${mapstruct}</version>
+            <scope>provided</scope>
+        </dependency>
+        <!-- freemarker 模板引擎 -->
+        <dependency>
+            <groupId>org.freemarker</groupId>
+            <artifactId>freemarker</artifactId>
+            <version>${freemarker}</version>
         </dependency>
         <!-- swagger -->
         <dependency>
@@ -86,82 +122,34 @@
             <artifactId>springfox-swagger-ui</artifactId>
             <version>${springfox-swagger2}</version>
         </dependency>
-        <!-- mybatis plus -->
+        <!-- 数据库驱动相关 -->
         <dependency>
-            <groupId>org.projectlombok</groupId>
-            <artifactId>lombok</artifactId>
-            <version>${lombok}</version>
-        </dependency>
-        <dependency>
-            <groupId>com.baomidou</groupId>
-            <artifactId>mybatis-plus-boot-starter</artifactId>
-            <version>${mybatis-plus-boot-starter}</version>
+            <groupId>com.alibaba</groupId>
+            <artifactId>druid-spring-boot-starter</artifactId>
+            <version>${druid}</version>
+            <scope>compile</scope>
         </dependency>
         <dependency>
             <groupId>mysql</groupId>
             <artifactId>mysql-connector-java</artifactId>
             <version>${mysql-connector-java}</version>
         </dependency>
-        <!-- data validation -->
         <dependency>
-            <groupId>javax.validation</groupId>
-            <artifactId>validation-api</artifactId>
-            <version>${validation-api}</version>
+            <groupId>com.oracle</groupId>
+            <artifactId>ojdbc14</artifactId>
+            <version>${ojdbc}</version>
         </dependency>
         <dependency>
-            <groupId>org.hibernate</groupId>
-            <artifactId>hibernate-validator</artifactId>
-            <version>${hibernate-validator}</version>
+            <groupId>org.postgresql</groupId>
+            <artifactId>postgresql</artifactId>
+            <version>${postgresql}</version>
         </dependency>
-        <!-- liquibase -->
-        <dependency>
-            <groupId>org.liquibase</groupId>
-            <artifactId>liquibase-core</artifactId>
-            <version>${liquibase-core}</version>
-        </dependency>
-        <!-- freemarker 模板引擎 -->
-        <dependency>
-            <groupId>org.freemarker</groupId>
-            <artifactId>freemarker</artifactId>
-            <version>${freemarker}</version>
-        </dependency>
-        <!-- 引入spring boot actuator监控 -->
+        <!-- 监控相关 -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-actuator</artifactId>
             <version>${spring-boot}</version>
         </dependency>
-        <dependency>
-            <groupId>org.mapstruct</groupId>
-            <artifactId>mapstruct-jdk8</artifactId>
-            <version>${mapstruct}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.mapstruct</groupId>
-            <artifactId>mapstruct-processor</artifactId>
-            <version>${mapstruct}</version>
-            <scope>provided</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.cloud</groupId>
-            <artifactId>spring-cloud-starter-hystrix</artifactId>
-            <version>${hystrix}</version>
-        </dependency>
-        <!--<dependency>-->
-            <!--<groupId>org.springframework.security.oauth</groupId>-->
-            <!--<artifactId>spring-security-oauth2</artifactId>-->
-            <!--<version>${spring-boot}</version>-->
-        <!--</dependency>-->
-        <!--<dependency>-->
-            <!--<groupId>org.springframework.security</groupId>-->
-            <!--<artifactId>spring-security-jwt</artifactId>-->
-            <!--<version>1.0.10.RELEASE</version>-->
-        <!--</dependency>-->
-        <!--<dependency>-->
-            <!--<groupId>io.jsonwebtoken</groupId>-->
-            <!--<artifactId>jjwt</artifactId>-->
-            <!--<version>${jjwt}</version>-->
-        <!--</dependency>-->
     </dependencies>
 
     <build>

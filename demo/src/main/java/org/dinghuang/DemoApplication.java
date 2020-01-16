@@ -10,8 +10,6 @@ import org.springframework.web.servlet.config.annotation.EnableWebMvc;
  * @since 2019/2/26
  */
 @SpringBootApplication
-//@EnableEurekaClient
-//@EnableFeignClients
 @EnableWebMvc
 public class DemoApplication {
 

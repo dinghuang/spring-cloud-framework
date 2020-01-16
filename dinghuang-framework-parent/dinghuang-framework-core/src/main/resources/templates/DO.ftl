@@ -24,7 +24,7 @@ public class ${table_name}DO extends BaseModel {
     /**
      * ${model.columnComment!}
      */
-        <#if (model.columnType = 'VARCHAR' || model.columnType = 'TEXT' || model.columnType = 'VARCHAR2')>
+        <#if (model.columnType = 'VARCHAR' || model.columnType = 'TEXT' || model.columnType = 'VARCHAR2' || model.columnType = 'CHARACTER')>
             <#if (model.isPrimary)>
     @TableId
             </#if>
