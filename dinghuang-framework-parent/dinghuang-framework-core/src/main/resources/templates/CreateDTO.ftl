@@ -25,7 +25,7 @@ public class ${table_name}CreateDTO {
 
 <#if model_column?exists>
     <#list model_column as model>
-        <#if (!model.isPrimary && (model.columnType = 'VARCHAR' || model.columnType = 'TEXT' || model.columnType = 'VARCHAR2'))>
+        <#if (!model.isPrimary && (model.columnType = 'VARCHAR' || model.columnType = 'TEXT' || model.columnType = 'VARCHAR2' || model.columnType = 'CHARACTER'))>
     @ApiModelProperty(notes = "${model.columnComment!}")
     @Length(max = ${model.columnLength!}, min = 0, message = "${table_annotation}的${model.columnComment!}长度不能超过${model.columnLength!}")
             <#if (model.isNullAble)>

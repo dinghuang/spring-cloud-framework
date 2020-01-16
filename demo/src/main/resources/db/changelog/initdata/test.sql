@@ -2,20 +2,20 @@
 
 --changeset dinghuang-2018-03-04-test-table-create:1
 CREATE TABLE test (
-ID NUMBER ( 19 ) PRIMARY KEY NOT NULL,
-NAME VARCHAR2 ( 19 ) NOT NULL,
-SEX VARCHAR2 ( 19 ) NOT NULL,
-OBJECT_VERSION_NUMBER NUMBER ( 20 )  DEFAULT 0,
-CREATED_BY VARCHAR2 ( 50 )  DEFAULT '-1',
-CREATED_BY_NAME VARCHAR2 ( 50 )  DEFAULT '-1',
-CREATION_DATE DATE DEFAULT SYSDATE,
-LAST_UPDATED_BY VARCHAR2 ( 50 )  DEFAULT '-1',
-LAST_UPDATED_BY_NAME VARCHAR2 ( 50 )DEFAULT '-1',
-LAST_UPDATED_DATE DATE DEFAULT SYSDATE
-) tablespace TEST;
-
+ID BIGINT PRIMARY KEY NOT NULL,
+NAME CHARACTER ( 19 ) NOT NULL,
+SEX CHARACTER ( 19 ) NOT NULL,
+OBJECT_VERSION_NUMBER BIGINT NOT NULL DEFAULT 0,
+CREATED_BY CHARACTER ( 50 ) NOT NULL DEFAULT '-1',
+CREATED_BY_NAME CHARACTER ( 50 ) NOT NULL DEFAULT '-1',
+CREATION_DATE DATE NOT NULL DEFAULT CURRENT_TIMESTAMP,
+LAST_UPDATED_BY CHARACTER ( 50 ) NOT NULL DEFAULT '-1',
+LAST_UPDATED_BY_NAME CHARACTER ( 50 ) NOT NULL DEFAULT '-1',
+LAST_UPDATED_DATE DATE NOT NULL DEFAULT CURRENT_TIMESTAMP
+);
 COMMENT ON TABLE test IS '测试对象';
 COMMENT ON COLUMN test.ID IS '主键';
+COMMENT ON COLUMN test.NAME IS '姓名';
 COMMENT ON COLUMN test.SEX IS '性别';
 COMMENT ON COLUMN test.OBJECT_VERSION_NUMBER IS '乐观锁版本号';
 COMMENT ON COLUMN test.CREATED_BY IS '创建人';
@@ -27,5 +27,7 @@ COMMENT ON COLUMN test.LAST_UPDATED_DATE IS '最后更新时间';
 --rollback DROP TABLE IF EXISTS `test`;
 
 --changeset dinghuang-2018-03-04-test-table-init-data:2
-INSERT INTO "TEST"."TEST"("ID", "NAME", "SEX", "OBJECT_VERSION_NUMBER", "CREATED_BY", "CREATED_BY_NAME", "CREATION_DATE", "LAST_UPDATED_BY", "LAST_UPDATED_BY_NAME", "LAST_UPDATED_DATE") VALUES ('1', '丁煌', '男', '1', '-1', '-1', TO_DATE('2020-01-15 14:55:09', 'SYYYY-MM-DD HH24:MI:SS'), '-1', '-1', TO_DATE('2020-01-15 14:55:16', 'SYYYY-MM-DD HH24:MI:SS'));
---rollback DELETE from "TEST"."TEST" where id in(1);
+INSERT INTO "public"."test" ( "id", "name", "sex", "object_version_number", "created_by", "created_by_name", "creation_date", "last_updated_by", "last_updated_by_name", "last_updated_date" )
+VALUES
+	( 1, '1                  ', '2                  ', 1, '-1                                                ', '-1                                                ', '2020-01-16', '-1                                                ', '-1                                                ', '2020-01-16' );
+--rollback DELETE from "public"."TEST" where id in(1);
