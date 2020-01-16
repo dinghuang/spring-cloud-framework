@@ -1,9 +1,9 @@
 package ${package_name}.service;
 
-import ${package_name}.dto.${table_name}CreateDTO;
-import ${package_name}.dto.${table_name}DTO;
-import ${package_name}.dto.${table_name}UpdateDTO;
-import ${package_name}.dto.${table_name}CreateOrUpdateDTO;
+import ${package_name}.dto.${table_name?uncap_first}.${table_name}CreateDTO;
+import ${package_name}.dto.${table_name?uncap_first}.${table_name}DTO;
+import ${package_name}.dto.${table_name?uncap_first}.${table_name}UpdateDTO;
+import ${package_name}.dto.${table_name?uncap_first}.${table_name}CreateOrUpdateDTO;
 import ${package_name}.infra.dataobject.${table_name}DO;
 import ${package_name}.infra.repository.${table_name}Repository;
 import ${package_name}.mapper.${table_name}Mapper;

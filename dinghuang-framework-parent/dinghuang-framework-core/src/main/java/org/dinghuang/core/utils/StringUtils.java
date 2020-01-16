@@ -18,7 +18,7 @@ public class StringUtils {
      * 驼峰转下划线
      *
      * @param string string
-     * @return
+     * @return String
      */
     public static String HumpToUnderline(String string) {
         Matcher matcher = HUMP_PATTERN.matcher(string);

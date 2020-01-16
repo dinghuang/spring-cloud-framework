@@ -1,10 +1,10 @@
 package ${package_name}.mapper;
 
 import ${package_name}.infra.dataobject.${table_name}DO;
-import ${package_name}.dto.${table_name}DTO;
-import ${package_name}.dto.${table_name}CreateDTO;
-import ${package_name}.dto.${table_name}UpdateDTO;
-import ${package_name}.dto.${table_name}CreateOrUpdateDTO;
+import ${package_name}.dto.${table_name?uncap_first}.${table_name}DTO;
+import ${package_name}.dto.${table_name?uncap_first}.${table_name}CreateDTO;
+import ${package_name}.dto.${table_name?uncap_first}.${table_name}UpdateDTO;
+import ${package_name}.dto.${table_name?uncap_first}.${table_name}CreateOrUpdateDTO;
 import org.mapstruct.Mapper;
 import org.mapstruct.factory.Mappers;
 import org.dinghuang.core.dto.PageableDTO;

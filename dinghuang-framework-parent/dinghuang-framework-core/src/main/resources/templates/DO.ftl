@@ -24,7 +24,7 @@ public class ${table_name}DO extends BaseModel {
     /**
      * ${model.columnComment!}
      */
-        <#if (model.columnType = 'VARCHAR' || model.columnType = 'TEXT')>
+        <#if (model.columnType = 'VARCHAR' || model.columnType = 'TEXT' || model.columnType = 'VARCHAR2')>
             <#if (model.isPrimary)>
     @TableId
             </#if>
@@ -33,7 +33,7 @@ public class ${table_name}DO extends BaseModel {
             </#if>
     private String ${model.changeColumnName?uncap_first};
         </#if>
-        <#if (model.columnType = 'BIGINT')>
+        <#if (model.columnType = 'BIGINT' || model.columnType = 'NUMBER')>
             <#if (model.isPrimary)>
     @TableId(type = IdType.ID_WORKER)
             </#if>

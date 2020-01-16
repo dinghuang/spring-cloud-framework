@@ -1,4 +1,4 @@
-package ${package_name}.dto;
+package ${package_name};
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import io.swagger.annotations.ApiModel;
@@ -10,7 +10,7 @@ import java.util.Date;
 
 import javax.validation.constraints.DecimalMax;
 import javax.validation.constraints.NotNull;
-import org.hibernate.validator.constraints.NotBlank;
+import javax.validation.constraints.NotBlank;
 
 /**
  * ${table_annotation}UpdateDTO
@@ -24,7 +24,7 @@ public class ${table_name}UpdateDTO {
 
 <#if model_column?exists>
     <#list model_column as model>
-        <#if (model.columnType = 'VARCHAR' || model.columnType = 'TEXT')>
+        <#if (model.columnType = 'VARCHAR' || model.columnType = 'TEXT' || model.columnType = 'VARCHAR2')>
     @ApiModelProperty(notes = "${model.columnComment!}")
     @Length(max = ${model.columnLength!}, min = 0, message = "${table_annotation}的${model.columnComment!}长度不能超过${model.columnLength!}")
             <#if (model.isNullAble)>
@@ -32,7 +32,7 @@ public class ${table_name}UpdateDTO {
             </#if>
     private String ${model.changeColumnName?uncap_first};
         </#if>
-        <#if (model.columnType = 'BIGINT')>
+        <#if (model.columnType = 'BIGINT' || model.columnType = 'NUMBER' )>
     @ApiModelProperty(notes = "${model.columnComment!}")
             <#if (model.isNullAble)>
     @NotNull(message = "${table_annotation}的${model.columnComment!}不能为空")

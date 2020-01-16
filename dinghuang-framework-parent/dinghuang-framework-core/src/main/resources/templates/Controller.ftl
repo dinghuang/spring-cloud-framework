@@ -1,9 +1,9 @@
 package ${package_name}.controller;
 
-import ${package_name}.dto.${table_name}CreateDTO;
-import ${package_name}.dto.${table_name}DTO;
-import ${package_name}.dto.${table_name}UpdateDTO;
-import ${package_name}.dto.${table_name}CreateOrUpdateDTO;
+import ${package_name}.dto.${table_name?uncap_first}.${table_name}CreateDTO;
+import ${package_name}.dto.${table_name?uncap_first}.${table_name}DTO;
+import ${package_name}.dto.${table_name?uncap_first}.${table_name}UpdateDTO;
+import ${package_name}.dto.${table_name?uncap_first}.${table_name}CreateOrUpdateDTO;
 import ${package_name}.service.${table_name}Service;
 import org.dinghuang.core.dto.ValidList;
 import org.dinghuang.core.dto.PageableDTO;

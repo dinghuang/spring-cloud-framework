@@ -25,7 +25,8 @@ public class CodeGeneratorUtils {
     private static final Logger LOGGER = LoggerFactory.getLogger(CodeGeneratorUtils.class);
 
     private static final String AUTHOR = "dinghuang123@gmail.com";
-    private static final String DRIVER = "com.mysql.jdbc.Driver";
+    private static final String MYSQL_DRIVER = "com.mysql.jdbc.Driver";
+    private static final String ORACLE_DRIVER = "oracle.jdbc.driver.OracleDriver";
     private static final String COLUMN_NAME = "COLUMN_NAME";
     private static final String DATA_TYPE = "DATA_TYPE";
     private static final String COLUMN_COMMENT = "COLUMN_COMMENT";
@@ -40,20 +41,18 @@ public class CodeGeneratorUtils {
     private static final String CHARACTER_MAXIMUM_LENGTH = "CHARACTER_MAXIMUM_LENGTH";
     private static final String COLUMN_KEY = "COLUMN_KEY";
     private static final String PRI = "PRI";
+    private static final String ORACLE = "jdbc:oracle:thin";
+    private static final String DTO = ".dto.";
     private Boolean cover = false;
     private String priMaryName = "Id";
     private String tableName;
 
-    public static void main(String[] args) throws Exception {
-        CodeGeneratorUtils codeGenerateUtils = new CodeGeneratorUtils();
-        codeGenerateUtils.generate(true, "test_order", "order", "订单", "org.dinghuang.demo.application", "jdbc:mysql://127.0.0.1:3306/adas?useUnicode=true&characterEncoding=utf-8&useSSL=false", "root", "root");
-    }
-
     /**
      * 自动生成代码
      * <p>
-     * 例如(true, "aaa_asd", "asd", "哈哈", "com.dinghuang.sale.customer", "jdbc:mysql://127.0.0.1:3306/adas?useUnicode=true&characterEncoding=utf-8&useSSL=false", "root", "root")
+     * 例如(null,true, "aaa_asd", "asd", "哈哈", "com.dinghuang.sale.customer", "jdbc:mysql://127.0.0.1:3306/adas?useUnicode=true&characterEncoding=utf-8&useSSL=false", "root", "root")
      *
+     * @param rootPath         根路径
      * @param cover            是否覆盖
      * @param tableName        表名
      * @param moduleName       模块名
@@ -63,23 +62,24 @@ public class CodeGeneratorUtils {
      * @param user             数据库用户名
      * @param password         数据库密码
      */
-    public void generate(Boolean cover, String tableName, String moduleName, String tableDescription, String path, String url, String user, String password) throws SQLException {
+    public void generate(String rootPath, Boolean cover, String tableName, String moduleName, String tableDescription, String path, String url, String user, String password) {
         this.tableName = tableName;
         this.cover = cover;
         try {
-            String filePath = System.getProperty("user.dir") + "/src/main/java/" + path.replace(".", "/") + "/";
+            rootPath = rootPath != null ? rootPath : System.getProperty("user.dir");
+            String filePath = rootPath + "/src/main/java/" + path.replace(".", "/") + "/";
             List<ColumnClass> columnClassList = new ArrayList<>();
             ColumnClass columnClass;
             List<Map<String, Object>> list = getColumnData(url, user, password);
             assert list != null;
             for (Map<String, Object> map : list) {
-                if (map.get(COLUMN_NAME).equals(BaseModelEnum.CREATED_BY.value())
-                        || map.get(COLUMN_NAME).equals(BaseModelEnum.CREATED_BY_NAME.value())
-                        || map.get(COLUMN_NAME).equals(BaseModelEnum.CREATION_DATE.value())
-                        || map.get(COLUMN_NAME).equals(BaseModelEnum.OBJECT_VERSION_NUMBER.value())
-                        || map.get(COLUMN_NAME).equals(BaseModelEnum.LAST_UPDATED_BY.value())
-                        || map.get(COLUMN_NAME).equals(BaseModelEnum.LAST_UPDATED_BY_NAME.value())
-                        || map.get(COLUMN_NAME).equals(BaseModelEnum.LAST_UPDATED_DATE.value())
+                if (map.get(COLUMN_NAME).toString().equalsIgnoreCase(BaseModelEnum.CREATED_BY.value())
+                        || map.get(COLUMN_NAME).toString().equalsIgnoreCase(BaseModelEnum.CREATED_BY_NAME.value())
+                        || map.get(COLUMN_NAME).toString().equalsIgnoreCase(BaseModelEnum.CREATION_DATE.value())
+                        || map.get(COLUMN_NAME).toString().equalsIgnoreCase(BaseModelEnum.OBJECT_VERSION_NUMBER.value())
+                        || map.get(COLUMN_NAME).toString().equalsIgnoreCase(BaseModelEnum.LAST_UPDATED_BY.value())
+                        || map.get(COLUMN_NAME).toString().equalsIgnoreCase(BaseModelEnum.LAST_UPDATED_BY_NAME.value())
+                        || map.get(COLUMN_NAME).toString().equalsIgnoreCase(BaseModelEnum.LAST_UPDATED_DATE.value())
                         ) {
                     continue;
                 }
@@ -138,15 +138,15 @@ public class CodeGeneratorUtils {
             //生成Controller层文件
             generateControllerFile(moduleName, path, filePath, tableDescription);
             //生成Mapper.xml文件
-            generateXmlMapperFile(moduleName, path, tableDescription);
+            generateXmlMapperFile(moduleName, path, rootPath, tableDescription);
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
     }
 
-    private void generateXmlMapperFile(String moduleName, String path, String tableDescription) throws Exception {
+    private void generateXmlMapperFile(String moduleName, String path, String filePath, String tableDescription) throws Exception {
         final String suffix = "Mapper.xml";
-        String filePath = System.getProperty("user.dir") + "/src/main/resources/mapper/";
+        filePath = filePath + File.separator + "/src/main/resources/mapper/";
         final String pathUrl = filePath + replaceUnderLineAndUpperCase(moduleName) + suffix;
         final String templateName = "XMLMapper.ftl";
         File mapperFile = new File(pathUrl);
@@ -156,15 +156,26 @@ public class CodeGeneratorUtils {
 
     private void generateCreateOrUpdateDTOFile(Map<String, Object> dataMap, String moduleName, String path, String filePath, String tableDescription) throws Exception {
         final String suffix = "CreateOrUpdateDTO.java";
-        final String pathUrl = filePath + DTO_PATH + replaceUnderLineAndUpperCase(moduleName) + suffix;
+        final String pathUrl = filePath + DTO_PATH + toLowerCaseFirstOne(replaceUnderLineAndUpperCase(moduleName) + "/") + replaceUnderLineAndUpperCase(moduleName) + suffix;
         final String templateName = "CreateOrUpdateDTO.ftl";
         File mapperFile = new File(pathUrl);
+        path = path + DTO + toLowerCaseFirstOne(replaceUnderLineAndUpperCase(moduleName));
         generateFileByTemplate(templateName, mapperFile, dataMap, moduleName, path, tableDescription);
     }
 
     private List<Map<String, Object>> getColumnData(String url, String user, String password) throws SQLException {
         Connection conn = null;
-        String sql = "select * from information_schema.columns where TABLE_NAME='" + this.tableName + "'";
+        String sql;
+        if (url.contains(ORACLE)) {
+            sql = "SELECT utc.column_name AS COLUMN_NAME,utc.data_type AS DATA_TYPE,utc.data_length AS CHARACTER_MAXIMUM_LENGTH,CASE " +
+                    "utc.nullable WHEN 'N' THEN 'NO' ELSE 'YES' END AS IS_NULLABLE,ucc.comments AS COLUMN_COMMENT,CASE utc.column_name " +
+                    "WHEN (SELECT col.column_name FROM user_constraints con,user_cons_columns col WHERE con.constraint_name = " +
+                    "col.constraint_name AND con.constraint_type = 'P' AND col.table_name = '" + this.tableName.toUpperCase() + "') THEN 'PRI' ELSE 'OTHER' END AS COLUMN_KEY " +
+                    "FROM user_tab_columns utc,user_col_comments ucc WHERE utc.table_name = '" + this.tableName.toUpperCase() + "' AND utc.table_name = ucc.table_name " +
+                    "AND utc.column_name = ucc.column_name ORDER BY utc.column_id";
+        } else {
+            sql = "select * from information_schema.columns where TABLE_NAME='" + this.tableName + "'";
+        }
         PreparedStatement stmt = null;
         try {
             conn = getConnection(url, user, password);
@@ -184,9 +195,13 @@ public class CodeGeneratorUtils {
         }
     }
 
-    private Connection getConnection(String url, String user, String passworg) throws Exception {
-        Class.forName(DRIVER);
-        return DriverManager.getConnection(url, user, passworg);
+    private Connection getConnection(String url, String user, String password) throws Exception {
+        if (url.contains(ORACLE)) {
+            Class.forName(ORACLE_DRIVER);
+        } else {
+            Class.forName(MYSQL_DRIVER);
+        }
+        return DriverManager.getConnection(url, user, password);
     }
 
     private void generateControllerFile(String moduleName, String path, String filePath, String tableDescription) throws Exception {
@@ -218,25 +233,28 @@ public class CodeGeneratorUtils {
 
     private void generateUpdateDTOFile(Map<String, Object> dataMap, String moduleName, String path, String filePath, String tableDescription) throws Exception {
         final String suffix = "UpdateDTO.java";
-        final String pathUrl = filePath + DTO_PATH + replaceUnderLineAndUpperCase(moduleName) + suffix;
+        final String pathUrl = filePath + DTO_PATH + toLowerCaseFirstOne(replaceUnderLineAndUpperCase(moduleName) + "/") + replaceUnderLineAndUpperCase(moduleName) + suffix;
         final String templateName = "UpdateDTO.ftl";
         File mapperFile = new File(pathUrl);
+        path = path + DTO + toLowerCaseFirstOne(replaceUnderLineAndUpperCase(moduleName));
         generateFileByTemplate(templateName, mapperFile, dataMap, moduleName, path, tableDescription);
     }
 
     private void generateCreateDTOFile(Map<String, Object> dataMap, String moduleName, String path, String filePath, String tableDescription) throws Exception {
         final String suffix = "CreateDTO.java";
-        final String pathUrl = filePath + DTO_PATH + replaceUnderLineAndUpperCase(moduleName) + suffix;
+        final String pathUrl = filePath + DTO_PATH + toLowerCaseFirstOne(replaceUnderLineAndUpperCase(moduleName) + "/") + replaceUnderLineAndUpperCase(moduleName) + suffix;
         final String templateName = "CreateDTO.ftl";
         File mapperFile = new File(pathUrl);
+        path = path + DTO + toLowerCaseFirstOne(replaceUnderLineAndUpperCase(moduleName));
         generateFileByTemplate(templateName, mapperFile, dataMap, moduleName, path, tableDescription);
     }
 
     private void generateDTOFile(Map<String, Object> dataMap, String moduleName, String path, String filePath, String description) throws Exception {
         final String suffix = "DTO.java";
-        final String pathUrl = filePath + DTO_PATH + replaceUnderLineAndUpperCase(moduleName) + suffix;
+        final String pathUrl = filePath + DTO_PATH + toLowerCaseFirstOne(replaceUnderLineAndUpperCase(moduleName) + "/") + replaceUnderLineAndUpperCase(moduleName) + suffix;
         final String templateName = "DTO.ftl";
         File mapperFile = new File(pathUrl);
+        path = path + DTO + toLowerCaseFirstOne(replaceUnderLineAndUpperCase(moduleName));
         generateFileByTemplate(templateName, mapperFile, dataMap, moduleName, path, description);
     }
 
@@ -292,7 +310,7 @@ public class CodeGeneratorUtils {
         if (!fileParent.exists()) {
             fileParent.mkdirs();
         }
-        if (cover) {
+        if (cover || !file.exists()) {
             file.createNewFile();
             FileOutputStream fos = new FileOutputStream(file);
             dataMap.put("table_name_small", moduleName);
@@ -325,6 +343,7 @@ public class CodeGeneratorUtils {
     }
 
     private String replaceUnderLineAndUpperCase(String str) {
+        str = str.toLowerCase();
         StringBuilder sb = new StringBuilder();
         sb.append(str);
         int count = sb.indexOf("_");
