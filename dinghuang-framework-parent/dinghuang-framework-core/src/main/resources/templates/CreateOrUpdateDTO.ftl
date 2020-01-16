@@ -24,9 +24,9 @@ public class ${table_name}CreateOrUpdateDTO {
 
 <#if model_column?exists>
     <#list model_column as model>
-        <#if (model.columnType = 'VARCHAR' || model.columnType = 'TEXT' || model.columnType = 'VARCHAR2' || model.columnType = 'CHARACTER')>
+        <#if (model.columnType = 'VARCHAR' || model.columnType = 'TEXT' || model.columnType = 'VARCHAR2' || model.columnType = 'CHARACTER' || model.columnType = 'CHARACTER VARYING')>
     @ApiModelProperty(notes = "${model.columnComment!}")
-    @Length(max = ${model.columnLength!}, min = 0, message = "${table_annotation}的${model.columnComment!}长度不能超过${model.columnLength!}")
+    @Length(<#if (model.columnLength)??>max = ${model.columnLength!},</#if>min = 0, message = "${table_annotation}的${model.columnComment!}长度不能超过${model.columnLength!}")
             <#if (model.isNullAble)>
     @NotBlank(message = "${model.columnComment!}不能为空")
             </#if>

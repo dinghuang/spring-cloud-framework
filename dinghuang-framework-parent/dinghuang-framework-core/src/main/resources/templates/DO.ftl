@@ -21,10 +21,12 @@ public class ${table_name}DO extends BaseModel {
 
 <#if model_column?exists>
     <#list model_column as model>
+    <#if (model.columnComment)??>
     /**
      * ${model.columnComment!}
      */
-        <#if (model.columnType = 'VARCHAR' || model.columnType = 'TEXT' || model.columnType = 'VARCHAR2' || model.columnType = 'CHARACTER')>
+    </#if>
+        <#if (model.columnType = 'VARCHAR' || model.columnType = 'TEXT' || model.columnType = 'VARCHAR2' || model.columnType = 'CHARACTER' || model.columnType = 'CHARACTER VARYING')>
             <#if (model.isPrimary)>
     @TableId
             </#if>
