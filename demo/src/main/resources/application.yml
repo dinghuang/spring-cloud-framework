@@ -65,7 +65,7 @@ spring:
     #用于跟踪Liquibase并发使用情况的表的名称。
     databaseChangeLogLockTable: DATABASECHANGELOGLOCK
     #是否先清空数据库
-    dropFirst: false
+    dropFirst: true
     #是否应该在执行更新之前测试回滚。
     testRollbackOnUpdate: true
 mybatis-plus:

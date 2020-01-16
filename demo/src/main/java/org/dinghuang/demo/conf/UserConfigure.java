@@ -8,7 +8,7 @@ import org.springframework.context.annotation.Configuration;
  * @author dinghuang123@gmail.com
  * @since 2020/1/16
  */
-@Configuration
+@Configuration(value = "userInfoAdapter")
 public class UserConfigure implements UserInfoAdapter {
 
     @Override
