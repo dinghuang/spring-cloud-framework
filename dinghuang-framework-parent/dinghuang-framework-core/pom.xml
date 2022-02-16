@@ -35,7 +35,7 @@
         <freemarker>2.3.28</freemarker>
         <jjwt>0.9.1</jjwt>
         <ojdbc>10.2.0.4.0</ojdbc>
-        <postgresql>42.2.9</postgresql>
+        <postgresql>42.3.3</postgresql>
     </properties>
 
     <dependencies>
