@@ -23,7 +23,7 @@
         <java.version>1.8</java.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-        <spring-boot>2.1.0.RELEASE</spring-boot>
+        <spring-boot>2.5.12</spring-boot>
         <spring-cloud-dependencies>Greenwich.RELEASE</spring-cloud-dependencies>
         <spring-cloud-starter>1.4.7.RELEASE</spring-cloud-starter>
     </properties>
