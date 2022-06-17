@@ -16,7 +16,7 @@
         <java.version>1.8</java.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-        <fastjson>1.2.47</fastjson>
+        <fastjson>1.2.83</fastjson>
         <commons-collections>3.2.2</commons-collections>
         <commons-lang3>3.8.1</commons-lang3>
         <swagger-annotations>1.5.16</swagger-annotations>
